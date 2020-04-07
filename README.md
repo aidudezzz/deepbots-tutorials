@@ -27,9 +27,11 @@ Now we are ready to start working on the CartPole problem.
 
 ##### Creating the project  
 1. Open Webots and on the *menu bar* click *Wizards -> New Project Directory* 
+
     ![New project menu option](/images/newProjectMenuScreenshot.png)
 2. Select a directory of your choice
 3. On world settings **all** boxes should be ticked
+
     ![World settings](/images/worldSettingsScreenshot.png)
 4. Give your world a name, e.g. "cartPoleWorld.wbt"
 5. Press Finish
