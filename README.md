@@ -25,7 +25,7 @@ Before starting, several prerequisites should be met.
 ## CartPole Tutorial
 Now we are ready to start working on the CartPole problem.
 
-##### Creating the project  
+#### Creating the project  
 1. Open Webots and on the *menu bar* click *Wizards -> New Project Directory* 
 
     ![New project menu option](/images/newProjectMenuScreenshot.png)
@@ -41,7 +41,7 @@ You should end up with:
 
 ![Project created](/images/projectCreatedScreenshot.png)
 
-##### Setting up the world
+#### Setting up the world
 1. Click on the *Add a new object or import an object* button
 2. 
 ![cartpole axis](/images/cartPoleWorldAxes.png)
