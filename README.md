@@ -1,11 +1,11 @@
 # Deepbots Tutorial
 
 This tutorial is on how to use the deepbots framework. We will recreate the 
-[CartPole](https://gym.openai.com/envs/CartPole-v0/) problem in Webots, step-by-step and solve it with the 
-[Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) Reinforcement Learning (RL) 
-algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
+[CartPole](https://gym.openai.com/envs/CartPole-v0/) problem in [Webots](https://cyberbotics.com/), 
+step-by-step and solve it with the [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
+Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
 
-The complete example can be found on the [deepworlds](https://github.com/aidudezzz/deepworlds/) directory. 
+The complete example can be found on the [deepworlds](https://github.com/aidudezzz/deepworlds/) repository. 
 
 
 ## Prerequisites
@@ -17,31 +17,66 @@ Before starting, several prerequisites should be met.
     - [Linux](https://cyberbotics.com/doc/guide/installation-procedure#installation-on-linux)
     - [macOS](https://cyberbotics.com/doc/guide/installation-procedure#installation-on-macos)
 2. [Install Python version 3.X](https://www.python.org/downloads/) (please refer to 
-[Using Python](https://cyberbotics.com/doc/guide/using-python) to select proper Python version for your system) 
+[Using Python](https://cyberbotics.com/doc/guide/using-python#introduction) to select proper Python version for your system) 
 3. Follow the [Using Python](https://cyberbotics.com/doc/guide/using-python) guide
 4. [Using PyCharm IDE](https://cyberbotics.com/doc/guide/using-your-ide#pycharm)
 5. [Install PyTorch](https://pytorch.org/get-started/locally/)
+6. Install deepbots  (Add link)
 
 ## CartPole Tutorial
-Now we are ready to start working on the CartPole problem.
+Now we are ready to start working on the CartPole problem. First of all, we should create a new project.
 
-#### Creating the project  
-1. Open Webots and on the *menu bar* click *Wizards -> New Project Directory* 
-
+### Creating the project
+1. Open Webots and on the menu bar, click *"Wizards -> New Project Directory..."*\
     ![New project menu option](/images/newProjectMenuScreenshot.png)
 2. Select a directory of your choice
-3. On world settings **all** boxes should be ticked
-
+3. On world settings **all** boxes should be ticked\
     ![World settings](/images/worldSettingsScreenshot.png)
 4. Give your world a name, e.g. "cartPoleWorld.wbt"
 5. Press Finish
-6. Right-click on [this link](/CartPoleRobot.wbo) and click *Save link as...* to download the CartPole robot definition
 
-You should end up with: 
-
+You should end up with:\
 ![Project created](/images/projectCreatedScreenshot.png)
 
-#### Setting up the world
-1. Click on the *Add a new object or import an object* button
-2. 
-![cartpole axis](/images/cartPoleWorldAxes.png)
+### Adding a *supervisor* robot in the world
+<!---1. Right-click on [this link](/CartPoleRobot.wbo) and click *Save link as...* to download the CartPole robot 
+definition 
+2. Save the .wbo file inside the project directory--> 
+
+Now that the project and the starting world are created, we are going to create a special kind of robot, 
+a *supervisor*. Through the *supervisor controller script* we will be able to handle several aspects of the 
+simulation needed for RL (e.g. resetting).
+ 
+Adding the *supervisor* robot node:
+1. Click on the *Add a new object or import an object* button\ 
+![Add new object button](/images/addNewObjectButtonScreenshot.png)
+2. Click on *Base nodes -> Robot*
+3. Click *Add*. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node\
+![Add Robot node](/images/addRobotNodeScreenshot.png)
+4. Click on the *Robot* node and set its DEF  field below to "supervisor" to make it easily distinguishable
+4. Double click on the *Robot* node to expand it
+5. Scroll down to find the *supervisor* field and set it to TRUE\
+![Set supervisor to TRUE](/images/setSupervisorTrueScreenshot.png)
+6. Click *Save*\
+![Click save button](/images/clickSaveButtonScreenshot.png)
+
+### Adding the controllers
+Creating the *supervisor* and *robot controller scripts*:
+1. On the *menu bar*, click *"Wizards -> New Robot Controller..."*\
+![New robot controller](/images/newControllerMenuScreenshot.png)
+2. On *Language selection*, select *Python*
+3. Give it a name of your choice, e.g. supervisorController* 
+4. Press *Finish* 
+5. Repeat from step 1, for the robot controller
+
+Two new Python controller scripts should be created and opened in Webots text editor looking like this:\
+![New robot controller](/images/newControllerMenuScreenshot.png)
+    
+*If you are using an external IDE:    
+1. Un-tick the "open ... in Text Editor" box and then go to step 4.
+2. Navigate to the project directory, inside the *Controllers/controllerName/* directory
+3. Open the controller script with your IDE
+
+
+
+   
