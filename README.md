@@ -38,6 +38,7 @@ Now we are ready to start working on the CartPole problem.
 6. Right-click on [this link](/CartPoleRobot.wbo) and click *Save link as...* to download the CartPole robot definition
 
 You should end up with: 
+
 ![Project created](/images/projectCreatedScreenshot.png)
 
 ##### Setting up the world
