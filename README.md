@@ -48,7 +48,7 @@ a *supervisor*. Through the *supervisor controller script* we will be able to ha
 simulation needed for RL (e.g. resetting).
  
 Adding the *supervisor* robot node:
-1. Click on the *Add a new object or import an object* button\ 
+1. Click on the *Add a new object or import an object* button\
 ![Add new object button](/images/addNewObjectButtonScreenshot.png)
 2. Click on *Base nodes -> Robot*\
 ![Add Robot node](/images/addRobotNodeScreenshot.png)
