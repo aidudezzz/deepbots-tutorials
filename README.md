@@ -50,9 +50,9 @@ simulation needed for RL (e.g. resetting).
 Adding the *supervisor* robot node:
 1. Click on the *Add a new object or import an object* button\ 
 ![Add new object button](/images/addNewObjectButtonScreenshot.png)
-2. Click on *Base nodes -> Robot*
-3. Click *Add*. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node\
+2. Click on *Base nodes -> Robot*\
 ![Add Robot node](/images/addRobotNodeScreenshot.png)
+3. Click *Add*. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node
 4. Click on the *Robot* node and set its DEF  field below to "supervisor" to make it easily distinguishable
 4. Double click on the *Robot* node to expand it
 5. Scroll down to find the *supervisor* field and set it to TRUE\
