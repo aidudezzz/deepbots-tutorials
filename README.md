@@ -32,8 +32,7 @@ Now we are ready to start working on the CartPole problem.
 3. On world settings **all** boxes should be ticked
 4. Give your world a name, e.g. "cartPoleWorld.wbt"
 5. Press Finish
-6. Download the <a href="/CartPoleRobot.wbo" download>Click here to download</a><a id="raw-url" 
-<!--href="https://raw.githubusercontent.com/aidudezzz/deepbots-tutorial/master/CartPoleRobot.wbo">Download FILE</a>-->
+6. Right-click on [this link](/CartPoleRobot.wbo) and click *Save link as...* to download the CartPole robot definition
 
 You should end up with: *screenshot*
 
