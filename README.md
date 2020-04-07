@@ -23,17 +23,22 @@ Before starting, several prerequisites should be met.
 5. [Install PyTorch](https://pytorch.org/get-started/locally/)
 
 ## CartPole Tutorial
-<!--TODO add screenshots-->
 Now we are ready to start working on the CartPole problem.
 
 ##### Creating the project  
 1. Open Webots and on the *menu bar* click *Wizards -> New Project Directory* 
+    ![New project menu option](/images/newProjectMenuScreenshot.png)
 2. Select a directory of your choice
 3. On world settings **all** boxes should be ticked
+    ![World settings](/images/worldSettingsScreenshot.png)
 4. Give your world a name, e.g. "cartPoleWorld.wbt"
 5. Press Finish
 6. Right-click on [this link](/CartPoleRobot.wbo) and click *Save link as...* to download the CartPole robot definition
 
-You should end up with: *screenshot*
+You should end up with: 
+![Project created](/images/projectCreatedScreenshot.png)
 
+##### Setting up the world
+1. Click on the *Add a new object or import an object* button
+2. 
 ![cartpole axis](/images/cartPoleWorldAxes.png)
