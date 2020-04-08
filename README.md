@@ -5,6 +5,10 @@ This tutorial is on how to use the deepbots framework. We will recreate the
 step-by-step and solve it with the [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
 
+This tutorial will focus on the controller scripts and how to use the deepbots framework. The robot definition is 
+supplied for the tutorial. For guides on how to construct a robot, please visit the official 
+Webots [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
+
 The complete example can be found on the [deepworlds](https://github.com/aidudezzz/deepworlds/) repository. 
 
 
@@ -17,7 +21,8 @@ Before starting, several prerequisites should be met.
     - [Linux](https://cyberbotics.com/doc/guide/installation-procedure#installation-on-linux)
     - [macOS](https://cyberbotics.com/doc/guide/installation-procedure#installation-on-macos)
 2. [Install Python version 3.X](https://www.python.org/downloads/) (please refer to 
-[Using Python](https://cyberbotics.com/doc/guide/using-python#introduction) to select proper Python version for your system) 
+[Using Python](https://cyberbotics.com/doc/guide/using-python#introduction) to select the proper Python version for 
+your system) 
 3. Follow the [Using Python](https://cyberbotics.com/doc/guide/using-python) guide
 4. [Using PyCharm IDE](https://cyberbotics.com/doc/guide/using-your-ide#pycharm)
 5. [Install PyTorch](https://pytorch.org/get-started/locally/)
