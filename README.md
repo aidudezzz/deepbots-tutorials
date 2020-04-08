@@ -6,7 +6,7 @@ We will recreate the [CartPole](https://gym.openai.com/envs/CartPole-v0/) proble
 step-by-step and solve it with the [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
 
-This tutorial will focus on the controller scripts and how to use the *deepbots framework*. The robot node definition is 
+We will focus on the controller scripts and how to use the *deepbots framework*. The robot node definition is 
 supplied for the tutorial. For guides on how to construct a robot, please visit the official 
 Webots [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
 
@@ -87,7 +87,7 @@ Creating the *supervisor controller* and *robot controller* scripts:
 3. Open the controller script with your IDE
 
 Two new Python controller scripts should be created and opened in Webots text editor looking like this:\
-![New robot controller](/images/newControllerMenuScreenshot.png)
+![New robot controller](/images/newControllerCreated.png)
 
 Assigning the *supervisorController* to the *supervisor robot node* *controller* field:
 1. Expand the *supervisor Robot node* created earlier and scroll down to find the *controller* field
