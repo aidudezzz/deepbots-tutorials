@@ -1,11 +1,11 @@
 # Deepbots Tutorial (WIP)
 
-This tutorial is on how to use the deepbots framework. We will recreate the 
+This tutorial is on how to use the *deepbots framework*. We will recreate the 
 [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem in [Webots](https://cyberbotics.com/), 
 step-by-step and solve it with the [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
 
-This tutorial will focus on the controller scripts and how to use the deepbots framework. The robot definition is 
+This tutorial will focus on the controller scripts and how to use the *deepbots framework*. The robot definition is 
 supplied for the tutorial. For guides on how to construct a robot, please visit the official 
 Webots [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
 
@@ -97,4 +97,42 @@ Assigning the *supervisorController* as *supervisor* controller:
 5. Click *Save*
 
    
+### Code overview
+
+First, we take a look at the general workflow of the framework. We will create two classes that inherit the 
+*deepbots framework* classes and write implementations for several key methods, specific for the *CartPole* problem.
+
+We will be implementing the basic methods *get_observations*, *get_reward*, *is_done* and *reset*, used for RL based 
+on the [OpenAI Gym](https://gym.openai.com/) framework logic that will be contained in the *supervisor controller*. 
+These methods will compose the *environment* for the RL algorithm. The *supervisor controller* will also contain the 
+RL *agent*, that will receive *observations* and output *actions*.
+
+We will also be implementing four methods that will be used by the *handle_emitter* and *handle_receiver* methods on 
+both the *robot controller* and the *supervisor controller* to send and receive data between the *robot* and the 
+*supervisor*.
+
+The following diagram loosely defines the general workflow of the framework:\
+![deepbots workflow](/images/workflowDiagram.png)
+
+The *robot controller* will gather data from the robot's sensors and send it to the *supervisor controller*. The 
+*supervisor controller* will use the data received and extra data to compose the *observation* for the agent. Then, 
+using the *observation* the *agent* performs a forward pass and returns an *action*. Then the *supervisor controller* 
+sends the *action* to the *robot controller*, which performs the *action* on the *robot*. This closes the loop, that
+repeats until a termination condition defined in the *is_done* method. 
+
+
 ### Writing the scripts
+
+First, we will write the *robot controller* script. In this script we will import the *RobotEmitterReceiverCSV*
+class from the *deepbots framework* and inherit it into our own *CartPoleRobot* class. Then, we are going to
+implement the two basic framework methods *create_message* and *use_message_data*. The former gathers data from the 
+*Robot*'s sensors and packs them into a string message to be sent to the *supervisor controller* script. The latter 
+unpacks messages sent by the *supervisor* and uses the data to move the *CartPoleRobot* forward and backward.
+
+```python
+def code(self, x):
+    pre = fun1(x)
+    calc = pre**2
+    post = calc + 1
+    return post
+```
