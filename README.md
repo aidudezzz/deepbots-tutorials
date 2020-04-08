@@ -1,4 +1,4 @@
-# Deepbots Tutorial
+# Deepbots Tutorial (WIP)
 
 This tutorial is on how to use the deepbots framework. We will recreate the 
 [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem in [Webots](https://cyberbotics.com/), 
@@ -61,22 +61,35 @@ Adding the *supervisor* robot node:
 ![Click save button](/images/clickSaveButtonScreenshot.png)
 
 ### Adding the controllers
+Now we will create the two basic controller scripts needed to control the *supervisor* and the *robot* nodes.
+Then we are going to assign the *supervisor* controller script to the *supervisor Robot* created before.
+The *CartPole Robot* is going to be loaded into the world through the *supervisor* controller script later, but
+we still need to create its controller.
+
 Creating the *supervisor* and *robot controller scripts*:
 1. On the *menu bar*, click *"Wizards -> New Robot Controller..."*\
 ![New robot controller](/images/newControllerMenuScreenshot.png)
 2. On *Language selection*, select *Python*
-3. Give it a name of your choice, e.g. supervisorController* 
+3. Give it the name "*supervisorController*" 
 4. Press *Finish* 
-5. Repeat from step 1, for the robot controller
+5. Repeat from step 1, but on step 3 give the name "*robotController*"
 
 Two new Python controller scripts should be created and opened in Webots text editor looking like this:\
 ![New robot controller](/images/newControllerMenuScreenshot.png)
     
 *If you are using an external IDE:    
 1. Un-tick the "open ... in Text Editor" box and then go to step 4.
-2. Navigate to the project directory, inside the *Controllers/controllerName/* directory
-3. Open the controller script with your IDE
+2. Navigate to the project directory, inside the *Controllers/controllerName/* directories
+3. Open the controller scripts with your IDE
 
-
+Assigning the *supervisorController* as *supervisor* controller:
+1. Expand the *supervisor Robot* created earlier and scroll down to find the *controller* field
+2. Click on the *controller* field and press the "*Select...*" button below\
+![New robot controller](/images/assignSupervisorController1Screenshot.png)
+3. Find the "*supervisorController*" controller from the list and click it\
+![New robot controller](/images/assignSupervisorController2Screenshot.png)
+4. Click *OK*
+5. Click *Save*
 
    
+### Writing the scripts
