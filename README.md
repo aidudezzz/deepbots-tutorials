@@ -1,7 +1,7 @@
 # Deepbots Tutorial (WIP)
 
-This tutorial is on how to use the *deepbots framework*. We will recreate the 
-[CartPole](https://gym.openai.com/envs/CartPole-v0/) problem in [Webots](https://cyberbotics.com/), 
+This tutorial explains how to use the *deepbots framework* by setting up a simple problem. 
+We will recreate the [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem in [Webots](https://cyberbotics.com/), 
 step-by-step and solve it with the [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
 
