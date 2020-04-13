@@ -76,12 +76,12 @@ class PPOAgent:
         elif type_ == "selectActionMax":
             return np.argmax(action_prob).item(), 1.0
         else:
-            print("Wrong type in agent.work(), returning input")
-            return [agentInput[0][i].tolist() for i in range(agentInput.size()[1])]
+            raise Exception("Wrong type in agent.work(), returning input")
 
     def getValue(self, state):
         """
         Gets the value of the current state according to the critic model.
+
         :param state: agentInput
         :return: state's value
         """
@@ -113,6 +113,7 @@ class PPOAgent:
     def storeTransition(self, transition):
         """
         Stores a transition in the buffer to be used later.
+
         :param transition: state, action, action_prob, reward, next_state
         :return: None
         """
@@ -122,6 +123,9 @@ class PPOAgent:
         """
         Performs a training step or update for the actor and critic models, based on transitions gathered in the
         buffer. It then resets the buffer.
+        If provided with a batchSize, this is used instead of default self.batch_size
+
+        :param: batchSize: int
         :return: None
         """
         if batchSize is None:
@@ -205,65 +209,3 @@ class Critic(nn.Module):
         x = F.relu(self.fc2(x))
         value = self.state_value(x)
         return value
-
-# Example uses of the PPOAgent
-# def train_model(env, agent, episodes=200, render=False, max_steps=200):
-#     outer_range = tqdm.tqdm(total=episodes, desc='Progress: ', position=0)
-#
-#     reward_log = tqdm.tqdm(total=0, position=1, bar_format='{desc}')
-#
-#     for _ in range(episodes):
-#
-#         state = env.reset()
-#
-#         if render:
-#             env.render()
-#
-#         total_reward = 0
-#
-#         for _ in range(max_steps):
-#             action, action_prob = agent.select_action(state)
-#             next_state, reward, done, _ = env.step(action)
-#             total_reward += reward
-#             trans = Transition(state, action, action_prob, reward, next_state)
-#             if render: env.render()
-#             agent.store_transition(trans)
-#             state = next_state
-#
-#             if done:
-#                 break
-#
-#         if len(agent.buffer) >= agent.batch_size:
-#             agent.update()
-#
-#         reward_log.set_description_str("Episode reward: %4.2f" % total_reward)
-#         outer_range.update(1)
-#
-#
-# def test_model(env, agent, episodes=200, render=False, max_steps=200, use_max=True):
-#     for i in range(episodes):
-#
-#         state = env.reset()
-#
-#         if render:
-#             env.render()
-#
-#         total_reward = 0
-#
-#         for _ in range(max_steps):
-#             if use_max:
-#                 action = agent.select_max_action(state)
-#             else:
-#                 action, action_prob = agent.select_action(state)
-#             action = action.item()
-#
-#             next_state, reward, done, _ = env.step(action)
-#             total_reward += reward
-#             if render:
-#                 env.render()
-#             state = next_state
-#
-#             if done:
-#                 break
-#
-#         print("Episode %d completed, reward = %4.3f " % (i, total_reward))
