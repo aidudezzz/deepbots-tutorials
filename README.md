@@ -10,7 +10,8 @@ We will focus on the controller scripts and how to use the *deepbots framework*.
 supplied for the tutorial. For guides on how to construct a robot, please visit the official 
 Webots [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
 
-The complete example can be found on the [deepworlds](https://github.com/aidudezzz/deepworlds/) repository. 
+The complete example, with some added code for plots and monitoring, can be found on the 
+[deepworlds](https://github.com/aidudezzz/deepworlds/) repository. 
 
 
 ## Prerequisites
@@ -134,6 +135,9 @@ loop, that repeats until a termination condition is met, defined in the *is_done
 
 ### Writing the scripts
 
+Now we are ready to start writing the *robot controller* and *supervisor controller* scripts.
+It is recommended to delete the contents of the two scripts that were automatically created. 
+
 ### Robot controller script
 
 First, we will write the *robot controller* script. In this script we will import the *RobotEmitterReceiverCSV*
@@ -175,6 +179,8 @@ Finally, we initialize the four motors completing our `__init__()` method.
 ```
 After the initialization method is done we move on to the `create_message()` method implementation, used to pack the 
 value read by the sensor into a string, so it can be sent to the *supervisor controller*.
+
+(mind the indentation, the following methods belong to the CartpoleRobot class)
 ```python
     def create_message(self):
         # Read the sensor value, convert to string and save it in a list
@@ -201,6 +207,14 @@ Finally, we implement the `use_message_data()` method, which unpacks the message
         self.wheels3.setVelocity(motorSpeed)
         self.wheels4.setVelocity(motorSpeed)
 ```
+That is the CartpoleRobot class complete. Now all that's left, is to add (outside the class scope, mind the indentation)
+the code that runs the controller.
+
+```python
+# Create the robot controller object and run it
+robot_controller = CartpoleRobot()
+robot_controller.run()
+```
 
 And that's it for the *robot controller* script!
 
@@ -223,7 +237,7 @@ from utilities import normalizeToRange
 ```
 
 Then we define our class inheriting the imported, also defining the observation and action spaces.
-The observation space is basically the neural network's inputs, so its defined simply as an
+Here, the observation space is basically the number of the neural network's inputs, so its defined simply as an
 integer. 
 
 Num | Observation | Min | Max
@@ -234,7 +248,8 @@ Num | Observation | Min | Max
 3 | Pole Velocity At Tip | -Inf | Inf
 
 The action space defines the outputs of the neural network, which are 2. One for forward movement
-and one for backward movement.
+and one for backward movement. 
+
 ```python
 class CartPoleSupervisor(SupervisorCSV):
     def __init__(self):
