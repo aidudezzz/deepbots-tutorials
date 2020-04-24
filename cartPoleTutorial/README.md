@@ -33,15 +33,15 @@ For this tutorial you will also need to [install PyTorch](https://pytorch.org/ge
 Now we are ready to start working on the *CartPole* problem. First of all, we should create a new project.
 
 1. Open Webots and on the menu bar, click *"Wizards -> New Project Directory..."*\
-    ![New project menu option](/images/newProjectMenuScreenshot.png)
+    ![New project menu option](/cartPoleTutorial/images/newProjectMenuScreenshot.png)
 2. Select a directory of your choice
 3. On world settings **all** boxes should be ticked\
-    ![World settings](/images/worldSettingsScreenshot.png)
+    ![World settings](/cartPoleTutorial/images/worldSettingsScreenshot.png)
 4. Give your world a name, e.g. "cartPoleWorld.wbt"
 5. Press Finish
 
 You should end up with:\
-![Project created](/images/projectCreatedScreenshot.png)
+![Project created](/cartPoleTutorial/images/projectCreatedScreenshot.png)
 
 
 ### Adding a *supervisor robot* node in the world
@@ -51,16 +51,16 @@ a *supervisor*. Later, we will add the *supervisor controller* script, through w
 aspects of the simulation needed for RL (e.g. resetting).
  
 1. Click on the *Add a new object or import an object* button\
-![Add new object button](/images/addNewObjectButtonScreenshot.png)
+![Add new object button](/cartPoleTutorial/images/addNewObjectButtonScreenshot.png)
 2. Click on *Base nodes -> Robot*\
-![Add Robot node](/images/addRobotNodeScreenshot.png)
+![Add Robot node](/cartPoleTutorial/images/addRobotNodeScreenshot.png)
 3. Click *Add*. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node
 4. Click on the *Robot* node and set its DEF  field below to "supervisor" to make it easily distinguishable
 4. Double click on the *Robot* node to expand it
 5. Scroll down to find the *supervisor* field and set it to TRUE\
-![Set supervisor to TRUE](/images/setSupervisorTrueScreenshot.png)
+![Set supervisor to TRUE](/cartPoleTutorial/images/setSupervisorTrueScreenshot.png)
 6. Click *Save*\
-![Click save button](/images/clickSaveButtonScreenshot.png)
+![Click save button](/cartPoleTutorial/images/clickSaveButtonScreenshot.png)
 
 
 ### Adding the controllers
@@ -72,7 +72,7 @@ later, but we still need to create its controller.
 
 Creating the *supervisor controller* and *robot controller* scripts:
 1. On the *menu bar*, click *"Wizards -> New Robot Controller..."*\
-![New robot controller](/images/newControllerMenuScreenshot.png)
+![New robot controller](/cartPoleTutorial/images/newControllerMenuScreenshot.png)
 2. On *Language selection*, select *Python*
 3. Give it the name "*supervisorController*"*
 4. Press *Finish* 
@@ -84,14 +84,14 @@ Creating the *supervisor controller* and *robot controller* scripts:
 3. Open the controller script with your IDE
 
 Two new Python controller scripts should be created and opened in Webots text editor looking like this:\
-![New robot controller](/images/newControllerCreated.png)
+![New robot controller](/cartPoleTutorial/images/newControllerCreated.png)
 
 Assigning the *supervisorController* to the *supervisor robot* node *controller* field:
 1. Expand the *supervisor robot* node created earlier and scroll down to find the *controller* field
 2. Click on the *controller* field and press the "*Select...*" button below\
-![New robot controller](/images/assignSupervisorController1Screenshot.png)
+![New robot controller](/cartPoleTutorial/images/assignSupervisorController1Screenshot.png)
 3. Find the "*supervisorController*" controller from the list and click it\
-![New robot controller](/images/assignSupervisorController2Screenshot.png)
+![New robot controller](/cartPoleTutorial/images/assignSupervisorController2Screenshot.png)
 4. Click *OK*
 5. Click *Save*
 
@@ -119,7 +119,7 @@ We will also be implementing methods that will be used by the *handle_emitter* a
 *robot controller* to send and receive data between the *robot* and the *supervisor*.
 
 The following diagram loosely defines the general workflow of the framework:\
-![deepbots workflow](/images/workflowDiagram.png)
+![deepbots workflow](/cartPoleTutorial/images/workflowDiagram.png)
 
 The *robot controller* will gather data from the *robot's* sensors and send it to the *supervisor controller*. The 
 *supervisor controller* will use the data received and extra data to compose the *observation* for the agent. Then, 
@@ -523,7 +523,7 @@ while True:
 
 Now with the coding done you can click on the *Run the simulation* button and watch the training run!
  
-![Run the simulation](/images/clickPlay.png)\
+![Run the simulation](/cartPoleTutorial/images/clickPlay.png)\
 Webots allows to speed up the simulation, even run it without graphics, so the training shouldn't take long, at 
 least to see the agent becoming visibly better at moving under the pole to balance it. It takes a while for it to 
 achieve the *solved* condition, but when it does it becomes quite good at balancing the pole! You can even apply forces 
