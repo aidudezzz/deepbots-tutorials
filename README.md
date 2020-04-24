@@ -213,7 +213,7 @@ the code that runs the controller.
 ```python
 # Create the robot controller object and run it
 robot_controller = CartpoleRobot()
-robot_controller.run()
+robot_controller.run()  # Run method is implemented by the framework, just need to call it
 ```
 
 And that's it for the *robot controller* script!
