@@ -25,9 +25,10 @@ Before starting, several prerequisites should be met.
 [Using Python](https://cyberbotics.com/doc/guide/using-python#introduction) to select the proper Python version for 
 your system) 
 3. Follow the [Using Python](https://cyberbotics.com/doc/guide/using-python) guide
-4. [Using PyCharm IDE](https://cyberbotics.com/doc/guide/using-your-ide#pycharm)
-5. [Install PyTorch](https://pytorch.org/get-started/locally/)
-6. Install deepbots  (Add link)
+4. If you want to use [PyCharm](https://www.jetbrains.com/pycharm/) as your IDE refer to 
+[using PyCharm IDE](https://cyberbotics.com/doc/guide/using-your-ide#pycharm)
+5. [Install PyTorch](https://pytorch.org/get-started/locally/) (no CUDA/GPU support needed for this tutorial)
+6. [Install deepbots](https://github.com/aidudezzz/deepbots)
 
 
 ## CartPole
@@ -47,10 +48,10 @@ You should end up with:\
 ![Project created](/images/projectCreatedScreenshot.png)
 
 
-### Adding a *supervisor robot node* in the world
+### Adding a *supervisor robot* node in the world
 
 Now that the project and the starting world are created, we are going to create a special kind of *robot*, 
-a *supervisor*. Later, we will add the *supervisor controller script*, through which we will be able to handle several 
+a *supervisor*. Later, we will add the *supervisor controller* script, through which we will be able to handle several 
 aspects of the simulation needed for RL (e.g. resetting).
  
 1. Click on the *Add a new object or import an object* button\
@@ -69,8 +70,8 @@ aspects of the simulation needed for RL (e.g. resetting).
 ### Adding the controllers
 
 Now we will create the two basic controller scripts needed to control the *supervisor* and the *robot* nodes.
-Then we are going to assign the *supervisor controller script* to the *supervisor robot node* created before.
-Note that the *CartPole robot node* is going to be loaded into the world through the *supervisor controller script* 
+Then we are going to assign the *supervisor controller* script to the *supervisor robot* node created before.
+Note that the *CartPole robot* node is going to be loaded into the world through the *supervisor controller* script
 later, but we still need to create its controller.
 
 Creating the *supervisor controller* and *robot controller* scripts:
@@ -83,22 +84,20 @@ Creating the *supervisor controller* and *robot controller* scripts:
 
 *If you are using an external IDE:    
 1. Un-tick the "open ... in Text Editor" boxes and press *Finish*
-2. Navigate to the project directory, inside the *Controllers/controllerName/* directories
+2. Navigate to the project directory, inside the *Controllers/controllerName/* directory
 3. Open the controller script with your IDE
 
 Two new Python controller scripts should be created and opened in Webots text editor looking like this:\
 ![New robot controller](/images/newControllerCreated.png)
 
-Assigning the *supervisorController* to the *supervisor robot node* *controller* field:
-1. Expand the *supervisor Robot node* created earlier and scroll down to find the *controller* field
+Assigning the *supervisorController* to the *supervisor robot* node *controller* field:
+1. Expand the *supervisor robot* node created earlier and scroll down to find the *controller* field
 2. Click on the *controller* field and press the "*Select...*" button below\
 ![New robot controller](/images/assignSupervisorController1Screenshot.png)
 3. Find the "*supervisorController*" controller from the list and click it\
 ![New robot controller](/images/assignSupervisorController2Screenshot.png)
 4. Click *OK*
-5. Click *Save*\
-![Click save button](/images/clickSaveButtonScreenshot.png)
-
+5. Click *Save*
 
 ### Downloading the CartPole robot node
 
@@ -126,24 +125,23 @@ We will also be implementing methods that will be used by the *handle_emitter* a
 The following diagram loosely defines the general workflow of the framework:\
 ![deepbots workflow](/images/workflowDiagram.png)
 
-The *robot controller* will gather data from the *robot*'s sensors and send it to the *supervisor controller*. The 
+The *robot controller* will gather data from the *robot's* sensors and send it to the *supervisor controller*. The 
 *supervisor controller* will use the data received and extra data to compose the *observation* for the agent. Then, 
 using the *observation* the *agent* will perform a forward pass and return an *action*. Then the *supervisor controller* 
-will send the *action* to the *robot controller*, which will perform the *action* on the *robot*. This closes the loop, 
-that repeats until a termination condition is met, defined in the *is_done* method. 
+will send the *action* back to the *robot controller*, which will perform the *action* on the *robot*. This closes the 
+loop, that repeats until a termination condition is met, defined in the *is_done* method. 
 
 
 ### Writing the scripts
 
-First, we will write the *robot controller script*. In this script we will import the *RobotEmitterReceiverCSV*
+### Robot controller script
+
+First, we will write the *robot controller* script. In this script we will import the *RobotEmitterReceiverCSV*
 class from the *deepbots framework* and inherit it into our own *CartPoleRobot* class. Then, we are going to
 implement the two basic framework methods *create_message* and *use_message_data*. The former gathers data from the 
 *Robot*'s sensors and packs it into a string message to be sent to the *supervisor controller* script. The latter 
 unpacks messages sent by the *supervisor* that contain the next action, and uses the data to move the *CartPoleRobot* 
 forward and backward.
-
-
-### Robot controller script
 
 The only import we are going to need is the *RobotEmitterReceiverCSV* class.
 ```python
@@ -155,7 +153,7 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
     def __init__(self):
         super().__init__()
 ```
-Then we initialize the position sensor, that reads the pole's angle, needed for the agent's observation.
+Then we initialize the position sensor that reads the pole's angle, needed for the agent's observation.
 ```python
         self.positionSensor = self.robot.getPositionSensor("polePosSensor")
         self.positionSensor.enable(self.get_timestep())
@@ -179,7 +177,7 @@ After the initialization method is done we move on to the `create_message()` met
 value read by the sensor into a string, so it can be sent to the *supervisor controller*.
 ```python
     def create_message(self):
-        # Read the sensor value, convert to string and move it in a list
+        # Read the sensor value, convert to string and save it in a list
         message = [str(self.positionSensor.getValue())]
         return message
 ```
@@ -204,10 +202,10 @@ Finally, we implement the `use_message_data()` method, which unpacks the message
         self.wheels4.setVelocity(motorSpeed)
 ```
 
-And that's it for the *robot controller script*!
+And that's it for the *robot controller* script!
 
 ### Supervisor controller script
-Before we start coding, we should add two scripts, one containing the RL agent that implements the PPO algorithm, 
+Before we start coding, we should add two scripts, one that contains the RL PPO agent, 
 and the other containing utility functions that we are going to need.
 
 Save both files inside the project directory, under Controllers/supervisorController/
