@@ -531,3 +531,4 @@ in real time by pressing Alt - left-click and drag on the robot or the pole.
 
 That's it for this tutorial! :)
 
+![Solved cartpole demonstration](/cartPoleTutorial/images/cartPoleWorld.gif)
