@@ -1,14 +1,18 @@
-# Deepbots Tutorial (WIP)
+# Deepbots Tutorial
 
 This tutorial explains how to use the [*deepbots framework*](https://github.com/aidudezzz/deepbots) by setting 
-up a simple problem. 
-We will recreate the [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem in [Webots](https://cyberbotics.com/), 
-step-by-step and solve it with the [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
+up a simple problem. Mind that the tutorial is very detailed and many parts can be completed really fast by an 
+experienced user. The tutorial assumes no familiarity with the [Webots](https://cyberbotics.com/) simulator.
+
+We will recreate the [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem step-by-step in 
+[Webots](https://cyberbotics.com/), and solve it with the 
+[Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
 
-We will focus on the controller scripts and how to use the *deepbots framework*. The robot node definition is 
-supplied for the tutorial. For guides on how to construct a robot, please visit the official 
-Webots [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
+We will focus on creating the project, the world and the controller scripts and how to use the *deepbots framework*.
+For the purposes of the tutorial, a basic implementation of the PPO algorithm, together with the custom CartPole robot 
+node definition are supplied.  For guides on how to construct a custom robot, please visit the official Webots 
+[tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
 
 The complete example, with some added code for plots and monitoring, can be found on the 
 [deepworlds](https://github.com/aidudezzz/deepworlds/) repository. 
@@ -180,7 +184,7 @@ Finally, we initialize the four motors completing our `__init__()` method.
 After the initialization method is done we move on to the `create_message()` method implementation, used to pack the 
 value read by the sensor into a string, so it can be sent to the *supervisor controller*.
 
-(mind the indentation, the following methods belong to the CartpoleRobot class)
+(mind the indentation, the following two methods belong to the *CartpoleRobot* class)
 ```python
     def create_message(self):
         # Read the sensor value, convert to string and save it in a list
@@ -207,8 +211,8 @@ Finally, we implement the `use_message_data()` method, which unpacks the message
         self.wheels3.setVelocity(motorSpeed)
         self.wheels4.setVelocity(motorSpeed)
 ```
-That is the CartpoleRobot class complete. Now all that's left, is to add (outside the class scope, mind the indentation)
-the code that runs the controller.
+That's the *CartpoleRobot* class complete. Now all that's left, is to add (outside the class scope, mind the 
+indentation) the code that runs the controller.
 
 ```python
 # Create the robot controller object and run it
@@ -216,7 +220,7 @@ robot_controller = CartpoleRobot()
 robot_controller.run()  # Run method is implemented by the framework, just need to call it
 ```
 
-And that's it for the *robot controller* script!
+Now the *robot controller* script is complete! We move on to the *supervisor controller* script.
 
 ### Supervisor controller script
 Before we start coding, we should add two scripts, one that contains the RL PPO agent, 
@@ -245,10 +249,10 @@ Num | Observation | Min | Max
 0 | Cart Position z axis | -0.4 | 0.4
 1 | Cart Velocity | -Inf | Inf
 2 | Pole Angle | -1.3 rad | 1.3 rad
-3 | Pole Velocity At Tip | -Inf | Inf
+3 | Pole Velocity at Tip | -Inf | Inf
 
-The action space defines the outputs of the neural network, which are 2. One for forward movement
-and one for backward movement. 
+The action space defines the outputs of the neural network, which are 2. One for the forward movement
+and one for the backward movement of the robot. 
 
 ```python
 class CartPoleSupervisor(SupervisorCSV):
@@ -257,12 +261,12 @@ class CartPoleSupervisor(SupervisorCSV):
         self.observationSpace = 4  # The agent has 4 inputs
         self.actionSpace = 2  # The agent can perform 2 actions
 ```
-Then we initialize the self.robot variable which will hold a reference to the *CartPole robot node*.
+Then we initialize the `self.robot` variable which will hold a reference to the *CartPole robot* node.
 
-The respawnRobot() method is called to use the .wbo file we downloaded earlier to spawn the robot node
+The `respawnRobot()` method is called to use the .wbo file we downloaded earlier, to spawn the robot node
 into the world and give a value to the self.robot variable. We will implement this method later.
 
-We also get a reference for the *pole endpoint node*, which is a child node of the *CartPole robot node* and is going
+We also get a reference for the *pole endpoint* node, which is a child node of the *CartPole robot node* and is going
 to be useful for getting the pole tip velocity. 
 ```python
         self.robot = None
@@ -270,7 +274,9 @@ to be useful for getting the pole tip velocity.
         self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
         self.messageReceived = None  # Variable to save the messages received from the robot
 ```
-Finally, we initialize several variables used during training.
+Finally, we initialize several variables used during training. Note that the `self.stepsPerEpisode` is set to `200` 
+based on the problem's definition. Feel free to change the `self.episodeLimit` variable.
+
 ```python
 
         self.episodeCount = 0  # Episode counter
@@ -280,10 +286,13 @@ Finally, we initialize several variables used during training.
         self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
 ```        
 
-Before implementing the base environment methods, we will first implement the respawnRobot() method,
-which spawns the *CartPole robot node*, resetting it to its inital state, using several Webots methods.
-This method also uses the simulationResetPhysics() supervisor method to reset the simulation.
-Lastly, it resets the self.messageReceived variable used in the background for robot-supervisor communication.
+Before implementing the base environment methods, we will first implement the `respawnRobot()` method,
+which spawns the *CartPole robot* node, resetting it to its initial state, using several Webots methods.
+This method also uses the `simulationResetPhysics()` supervisor method to reset the simulation.
+Lastly, it resets the `self.messageReceived` variable used in the background for robot-supervisor communication.
+
+(mind the indentation of the following code snippets, the following methods all belong inside the 
+*CartpoleSupervisor* class)
 ```python
     def respawnRobot(self):
         if self.robot is not None:
@@ -300,18 +309,19 @@ Lastly, it resets the self.messageReceived variable used in the background for r
         self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
 ```
 
-Now its time for us to implement the base environment methods that a regular OpenAI Gym environment uses.
+Now its time for us to implement the base environment methods that a regular OpenAI Gym environment uses and
+most RL algorithm implementations (agents) expect.
 These base methods are *get_observations()*, *get_reward()*, *is_done()*, *reset()* and *get_info()*.
  
-Let's start with the *get_observations()* method, which builds the agent's observation (i.e. the neural network's input) 
+Let's start with the `get_observations()` method, which builds the agent's observation (i.e. the neural network's input) 
 for each step. This method also normalizes the values in the [-1.0, 1.0] range as appropriate, using the 
-*normalizeToRange()* utility method.
+`normalizeToRange()` utility method.
 
-We will start by getting the *CartPole robot node* position and velocity on the z axis. The z axis is the direction of 
-its forward/backward movement. We will also get the pole tip velocity from the poleEndpoint node we defined earlier
+We will start by getting the *CartPole robot* node position and velocity on the z axis. The z axis is the direction of 
+its forward/backward movement. We will also get the pole tip velocity from the *poleEndpoint* node we defined earlier.
 ```python
     def get_observations(self):
-        # Position on z axis
+        # Position on z axis, third (2) element of the getPosition vector
         cartPosition = normalizeToRange(self.robot.getPosition()[2], -0.4, 0.4, -1.0, 1.0)
         # Linear velocity on z axis
         cartVelocity = normalizeToRange(self.robot.getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True)
@@ -319,9 +329,9 @@ its forward/backward movement. We will also get the pole tip velocity from the p
         endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[3], -1.5, 1.5, -1.0, 1.0, clip=True)
 ```
 Now all it's missing is the pole angle off vertical, which will be provided by the robot sensor.
-To get it, we will need to call *the handle_receiver()* method to get the message sent by the robot into the
-self.messageReceived variable. The message received, as defined into the robot's *create_message()* method, is a string 
-which gets converted back into a list containing a single float value. 
+To get it, we will need to call the `handle_receiver()` method to get the message sent by the robot into the
+`self.messageReceived` variable. The message received, as defined into the robot's `create_message()` method, is a 
+string which, here, gets converted back into a single float value. 
 
 ```python
         # Update self.messageReceived received from robot, which contains pole angle
@@ -333,15 +343,15 @@ which gets converted back into a list containing a single float value.
             poleAngle = 0.0
 ```
 
-Finally, we return a list containing all four values we created earlier/
+Finally, we return a list containing all four values we created earlier.
 
 ```python
         return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
 ```
 
-Now for something simpler, we will define the *get_reward()* method, which simply returns
-1 for each step. Usually reward functions are more elaborate, but for this problem it is simply
-defined as the agent getting +1 for each step it manages to keep the pole from falling.
+Now for something simpler, we will define the `get_reward()` method, which simply returns
+`1` for each step. Usually reward functions are more elaborate, but for this problem it is simply
+defined as the agent getting a +1 reward for each step it manages to keep the pole from falling.
 
 ```python
     def get_reward(self, action=None):
@@ -349,7 +359,7 @@ defined as the agent getting +1 for each step it manages to keep the pole from f
 ```
 
 Moving on, we define the *is_done()* method, which contains the episode termination conditions:
-- Episode terminates if the pole has fallen beyond an angle which can be recovered (+-15 degrees)
+- Episode terminates if the pole has fallen beyond an angle which can be realistically recovered (+-15 degrees)
 - Episode terminates if episode score is over 195
 - Episode terminates if the robot hit the walls by moving into them, which is calculated based on its position on z axis
 
@@ -365,6 +375,7 @@ Moving on, we define the *is_done()* method, which contains the episode terminat
 
         if self.episodeScore > 195.0:
             return True
+
         cartPosition = round(self.robot.getPosition()[2], 2)  # Position on z axis
         if abs(cartPosition) > 0.39:
             return True
@@ -372,9 +383,9 @@ Moving on, we define the *is_done()* method, which contains the episode terminat
         return False
 ```
 
-We separate the *solved* condition into another method, the *solved()* method, because it requires different handling.
-The *solved* condition depends on the agent completing each episode successfully consistently. We measure this, by 
-taking the average episode score of the last 100 episodes and checking if it's over 195.
+We separate the *solved* condition into another method, the `solved()` method, because it requires different handling.
+The *solved* condition depends on the agent completing consecutive episodes successfully, consistently. We measure this,
+by taking the average episode score of the last 100 episodes and checking if it's over 195.
 
 ```python
     def solved(self):
@@ -384,9 +395,9 @@ taking the average episode score of the last 100 episodes and checking if it's o
         return False
 ```
 
-Now we move on to *reset()*. Reset simply calls the *respawnRobot()* method described earlier to reset the *CartPole 
-nobot node* to its initial state and then calls the Webots method to reset the simulation physics. Also resets
-self.messageReceived and then returns a zero vector as starting observation.
+Now we move on to `reset()`. Reset simply calls the `respawnRobot()` method described earlier to reset the *CartPole 
+robot* node to its initial state and then calls the Webots method to reset the simulation physics. Also resets
+`self.messageReceived` and then returns a zero vector as starting observation.
 
 ```python
     def reset(self):
@@ -396,19 +407,20 @@ self.messageReceived and then returns a zero vector as starting observation.
         return [0.0 for _ in range(self.observationSpace)]
 ```
 
-Lastly, we add a dummy implementation of *get_info()* method, because in this example it is not actually used.
+Lastly, we add a dummy implementation of `get_info()` method, because in this example it is not actually used, but
+is called by the framework.
 
 ```python
     def get_info(self):
         return None
 ```
 
-This concludes the *CartPoleSupervisor* class, that now contains all required methods to run an RL train loop!
+This concludes the *CartPoleSupervisor* class, that now contains all required methods to run an RL training loop!
 
 ### RL Training Loop
 
 Finally, it all comes together inside the RL training loop. Now we initialize the RL agent and create the 
-*CartPoleSupervisor* class object with which it gets trained to solve the problem and maximize the reward received
+*CartPoleSupervisor* class object with which it gets trained to solve the problem, maximizing the reward received
 by our reward function and achieve the solved condition defined.
 
 First we create a supervisor object and then initialize the PPO agent, providing it with the observation and action
@@ -419,43 +431,46 @@ supervisor = CartPoleSupervisor()
 agent = PPOAgent(supervisor.observationSpace, supervisor.actionSpace)
 ```
 
-Then we set the solved flag to false. This flag is used to terminate the training loop.
+Then we set the `solved` flag to `false`. This flag is used to terminate the training loop.
 ```python
 solved = False
 ```
 
 Now we define the outer loop which runs the number of episodes defined in the supervisor class
-and reset the world to get the starting observation. We also reset the episode score to zero.
+and resets the world to get the starting observation. We also reset the episode score to zero.
 
+(please be mindful of the indentation on the following code, because we are about to define several levels of nested
+loops and ifs)
 ```python
 # Run outer loop until the episodes limit is reached or the task is solved
-while not solved and supervisor.controller.episodeCount < supervisor.controller.episodeLimit:
-    observation = supervisor.controller.reset()  # Reset robot and get starting observation
-    supervisor.controller.episodeScore = 0
+while not solved and supervisor.episodeCount < supervisor.episodeLimit:
+    observation = supervisor.reset()  # Reset robot and get starting observation
+    supervisor.episodeScore = 0
 ```
 
 Inside the outer loop defined above we define the inner loop which runs for the course of an episode. This loop
 runs for a maximum number of steps defined by the problem. Here, the RL agent - environment loop takes place.
 
-We start by calling the agent.work() method, by providing it with the current observation, which for the first step
-is the zero vector returned by the reset() method. The work() method implements the forward pass of the agent's actor
-neural network, providing us with the next action. As the comment suggests the PPO algorithm implements exploration
-by sampling for the probability distribution the agent outputs from its actor softmax output layer.
+We start by calling the `agent.work()` method, by providing it with the current observation, which for the first step
+is the zero vector returned by the `reset()` method. The `work()` method implements the forward pass of the agent's 
+actor neural network, providing us with the next action. As the comment suggests the PPO algorithm implements 
+exploration by sampling for the probability distribution the agent outputs from its actor's softmax output layer.
 
 ```python
-    for step in range(supervisor.controller.stepsPerEpisode):
+    for step in range(supervisor.stepsPerEpisode):
         # In training mode the agent samples from the probability distribution, naturally implementing exploration
-        selectedAction, actionProb = supervisor.controller.agent.work(observation, type_="selectAction")
+        selectedAction, actionProb = supervisor.agent.work(observation, type_="selectAction")
 ``` 
 
-The next part contains the call to the step() method. This method calls most of the methods we implemented earlier 
-(get_observation(), get_reward(), is_done() and get_info()), steps the Webots controller and sends the action that the
-agent selected to the robot for execution. Step returns the new observation, the reward for the previous action and
-whether the episode is terminated (info is not implemented in this example).
+The next part contains the call to the `step()` method. This method calls most of the methods we implemented earlier 
+(`get_observation()`, `get_reward()`, `is_done()` and `get_info()`), steps the Webots controller and sends the action 
+that the agent selected to the robot for execution. Step returns the new observation, the reward for the previous 
+action and whether the episode is terminated (info is not implemented in this example).
 
-Then, we create the Transition, which is a named tuple that contains, as the name suggests, the transition between
-the previous observation to the newObservation. This is needed by the agent for its training procedure, so we call
-the agent's storeTransition() method to save it to the buffer.
+Then, we create the `Transition`, which is a named tuple that contains, as the name suggests, the transition between
+the previous `observation` (/state) to the `newObservation` (/newState). This is needed by the agent for its training 
+procedure, so we call the agent's `storeTransition()` method to save it to the buffer. Most RL algorithms require a 
+similar procedure and have similar methods to do it.
 
 ```python
         # Step the supervisor to get the current selectedAction's reward, the new observation and whether we reached 
@@ -468,37 +483,38 @@ the agent's storeTransition() method to save it to the buffer.
 ```
 
 Finally, we check whether the episode is terminated and if it is, we save the episode score, run a training step
-for the agent giving the number of steps taken in the episode as batchSize, check whether the problem is solved
-via the solved() method and break.
+for the agent giving the number of steps taken in the episode as batch size, check whether the problem is solved
+via the `solved()` method and break.
 
-If not, we add the step reward to the episodeScore accumulator, save the newObservation as observation and loop onto the
-next episode step.
+If not, we add the step reward to the `episodeScore` accumulator, save the `newObservation` as `observation` and loop 
+onto the next episode step.
 
 ```python
         if done:
             # Save the episode's score
-            supervisor.controller.episodeScoreList.append(supervisor.controller.episodeScore)
+            supervisor.episodeScoreList.append(supervisor.episodeScore)
             agent.trainStep(batchSize=step)
-            solved = supervisor.controller.solved()  # Check whether the task is solved
+            solved = supervisor.solved()  # Check whether the task is solved
             break
 
-        supervisor.controller.episodeScore += reward  # Accumulate episode reward
+        supervisor.episodeScore += reward  # Accumulate episode reward
         observation = newObservation  # observation for next step is current step's newObservation
 ```
 
 This is the inner loop complete and now we add a print statement and increment the episode counter to finalize the outer
 loop.
 
+(note that the following code snippet is part of the outer loop)
 ```python
-    print("Episode #", supervisor.controller.episodeCount, "score:", supervisor.controller.episodeScore)
-    supervisor.controller.episodeCount += 1  # Increment episode counter
+    print("Episode #", supervisor.episodeCount, "score:", supervisor.episodeScore)
+    supervisor.episodeCount += 1  # Increment episode counter
 ```
 
 With the outer loop complete, this completes the training procedure. Now all that's left is the testing loop which is a
-simpler version of the training loop. First we print a message on whether the task is solved or not (i.e. reached
-the episode limit without satisfying the solved condition) and call the reset() method. Then, we create a 
-while True loop that runs the agent's forward method, but this time selecting the action with the max probability
-out of the actor's softmax output, eliminating exploration. Finally, the step() method is called, but this time
+barebones, simpler version of the training loop. First we print a message on whether the task is solved or not (i.e. 
+reached the episode limit without satisfying the solved condition) and call the `reset()` method. Then, we create a 
+`while True` loop that runs the agent's forward method, but this time selecting the action with the max probability
+out of the actor's softmax output, eliminating exploration. Finally, the `step()` method is called, but this time
 we keep only the observation it returns so as to keep the environment - agent loop running.
 
 ```python
@@ -506,7 +522,7 @@ if not solved:
     print("Task is not solved, deploying agent for testing...")
 elif solved:
     print("Task is solved, deploying agent for testing...")
-observation = supervisor.controller.reset()
+observation = supervisor.reset()
 while True:
     selectedAction, actionProb = agent.work(observation, type_="selectActionMax")
     observation, _, _, _ = supervisor.step([selectedAction])
@@ -514,13 +530,13 @@ while True:
 
 ### Conclusion
 
-Now with the coding done you can click on the *Run the simulation* button and watch the training run! 
+Now with the coding done you can click on the *Run the simulation* button and watch the training run!
+ 
 ![Run the simulation](/images/clickPlay.png)\
-Webots allows to
-speed up the simulation, even run it without graphics, so the training shouldn't take long, at least to see the agent
-becoming visibly better at moving under the pole to balance it. It takes a while for it to achieve the *solved*
-condition, but when it does it becomes quite good at balancing the pole. You can apply forces in real time by pressing
-Alt - left click on the robot or the pole and dragging.
+Webots allows to speed up the simulation, even run it without graphics, so the training shouldn't take long, at 
+least to see the agent becoming visibly better at moving under the pole to balance it. It takes a while for it to 
+achieve the *solved* condition, but when it does it becomes quite good at balancing the pole! You can even apply forces 
+in real time by pressing Alt - left-click and drag on the robot or the pole.
 
-That's it for this tutorial!
+That's it for this tutorial! :)
 
