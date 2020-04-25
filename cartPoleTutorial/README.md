@@ -58,14 +58,14 @@ aspects of the simulation needed for RL (e.g. resetting).
 ![Add Robot node](/cartPoleTutorial/images/addRobotNodeScreenshot.png)
 3. Click *Add*. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node
 4. Click on the *Robot* node and set its DEF  field below to "supervisor" to make it easily distinguishable
-4. Double click on the *Robot* node to expand it
-5. Scroll down to find the *supervisor* field and set it to TRUE\
+5. Double click on the *Robot* node to expand it
+6. Scroll down to find the *supervisor* field and set it to TRUE\
 ![Set supervisor to TRUE](/cartPoleTutorial/images/setSupervisorTrueScreenshot.png)
-6. On the *children* field, right-click and select *Add new*
-7. Expand the *Base nodes* and find *Emitter*
-8. Select it and on the lower right press add
-9. Repeat from step 6, but this time add the *Receiver* node
-10. Click *Save*\
+7. On the *children* field, right-click and select *Add new*
+8. Expand the *Base nodes* and find *Emitter*
+9. Select it and on the lower right press *Add*
+10. Repeat from step 7, but this time add the *Receiver* node
+11. Click *Save*\
 ![Click save button](/cartPoleTutorial/images/clickSaveButtonScreenshot.png)
 
 
@@ -401,7 +401,6 @@ robot* node to its initial state and then calls the Webots method to reset the s
         self.respawnRobot()
         self.supervisor.simulationResetPhysics()  # Reset the simulation physics to start over
         self.messageReceived = None
-        self._last_message = None
         return [0.0 for _ in range(self.observationSpace)]
 ```
 
