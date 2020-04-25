@@ -59,7 +59,11 @@ aspects of the simulation needed for RL (e.g. resetting).
 4. Double click on the *Robot* node to expand it
 5. Scroll down to find the *supervisor* field and set it to TRUE\
 ![Set supervisor to TRUE](/cartPoleTutorial/images/setSupervisorTrueScreenshot.png)
-6. Click *Save*\
+6. On the *children* field, right-click and select *Add new*
+7. Expand the *Base nodes* and find *Emitter*
+8. Select it and on the lower right press add
+9. Repeat from step 6, but this time add the *Receiver* node
+10. Click *Save*\
 ![Click save button](/cartPoleTutorial/images/clickSaveButtonScreenshot.png)
 
 
