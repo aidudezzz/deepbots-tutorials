@@ -399,6 +399,7 @@ robot* node to its initial state and then calls the Webots method to reset the s
         self.respawnRobot()
         self.supervisor.simulationResetPhysics()  # Reset the simulation physics to start over
         self.messageReceived = None
+        self._last_message = None
         return [0.0 for _ in range(self.observationSpace)]
 ```
 
