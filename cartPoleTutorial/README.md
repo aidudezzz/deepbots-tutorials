@@ -454,7 +454,7 @@ exploration by sampling for the probability distribution the agent outputs from 
 ```python
     for step in range(supervisor.stepsPerEpisode):
         # In training mode the agent samples from the probability distribution, naturally implementing exploration
-        selectedAction, actionProb = supervisor.agent.work(observation, type_="selectAction")
+        selectedAction, actionProb = agent.work(observation, type_="selectAction")
 ``` 
 
 The next part contains the call to the `step()` method. This method calls most of the methods we implemented earlier 
