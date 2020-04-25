@@ -105,8 +105,9 @@ Assigning the *supervisorController* to the *supervisor robot* node *controller*
 
 The *CartPole robot node* definition is supplied for the purposes of the tutorial.
  
-1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/CartPoleRobot.wbo) and click *Save link as...* to download the CartPole robot 
-definition 
+1. Right-click on 
+[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/full_project/controllers/supervisorController/CartPoleRobot.wbo) 
+and click *Save link as...* to download the CartPole robot definition 
 2. Save the .wbo file inside the project directory, under Controllers/supervisorController/
 
 
@@ -224,8 +225,9 @@ Before we start coding, we should add two scripts, one that contains the RL PPO 
 and the other containing utility functions that we are going to need.
 
 Save both files inside the project directory, under Controllers/supervisorController/
-1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/scripts/PPOAgent.py) and click *Save link as...* to download the PPO agent
-2. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/scripts/utilities.py) and click *Save link as...* to download the utilities script
+1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/full_project/controllers/supervisorController/scripts/PPOAgent.py) 
+and click *Save link as...* to download the PPO agent
+2. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/full_project/controllers/supervisorController/utilities.py) and click *Save link as...* to download the utilities script
 
 Now for the imports, we are going to need the numpy library, the deepbots SupervisorCSV class, the PPO agent and the
 utilities.

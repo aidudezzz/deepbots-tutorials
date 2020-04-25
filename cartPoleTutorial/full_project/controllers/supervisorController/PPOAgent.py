@@ -150,7 +150,7 @@ class PPOAgent:
             state, action, old_action_log_prob = state.cuda(), action.cuda(), old_action_log_prob.cuda()
             Gt = Gt.cuda()
 
-        for i in range(self.ppo_update_iters):
+        for _ in range(self.ppo_update_iters):
             for index in BatchSampler(SubsetRandomSampler(range(len(self.buffer))), batchSize, False):
                 # Calculate the advantage at each step
                 Gt_index = Gt[index].view(-1, 1)
