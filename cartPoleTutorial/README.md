@@ -201,10 +201,10 @@ Finally, we implement the `use_message_data()` method, which unpacks the message
             motorSpeed = 0.0
         
         # Set the motors' velocities based on the action received
-        self.wheels1.setVelocity(motorSpeed)
-        self.wheels2.setVelocity(motorSpeed)
-        self.wheels3.setVelocity(motorSpeed)
-        self.wheels4.setVelocity(motorSpeed)
+        self.wheel1.setVelocity(motorSpeed)
+        self.wheel2.setVelocity(motorSpeed)
+        self.wheel3.setVelocity(motorSpeed)
+        self.wheel4.setVelocity(motorSpeed)
 ```
 That's the *CartpoleRobot* class complete. Now all that's left, is to add (outside the class scope, mind the 
 indentation) the code that runs the controller.
