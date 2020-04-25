@@ -1,5 +1,7 @@
 # CartPole Beginner Tutorial
 
+![Solved cartpole demonstration](/cartPoleTutorial/images/cartPoleWorld.gif)
+
 This tutorial explains how to use the [*deepbots framework*](https://github.com/aidudezzz/deepbots) by setting 
 up a simple problem. Keep in mind that the tutorial is very detailed and many parts can be completed really fast by an 
 experienced user. The tutorial assumes no familiarity with the [Webots](https://cyberbotics.com/) simulator.
