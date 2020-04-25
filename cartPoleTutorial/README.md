@@ -16,8 +16,10 @@ For the purposes of the tutorial, a basic implementation of the PPO algorithm, t
 node definition are supplied.  For guides on how to construct a custom robot, please visit the official Webots 
 [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
 
-The complete example, with some added code for plots and monitoring, can be found on the 
-[deepworlds](https://github.com/aidudezzz/deepworlds/) repository. 
+You can check the complete example [here](/cartPoleTutorial/full_project) with all the scripts and nodes used
+in this tutorial.
+The CartPole example is available (with some added code for plots/monitoring and keyboard controls) on the 
+[deepworlds](https://github.com/aidudezzz/deepworlds/) repository.
 
 
 ## Prerequisites
