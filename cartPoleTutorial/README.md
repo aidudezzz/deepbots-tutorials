@@ -290,7 +290,6 @@ based on the problem's definition. Feel free to change the `self.episodeLimit` v
 Before implementing the base environment methods, we will first implement the `respawnRobot()` method,
 which spawns the *CartPole robot* node, resetting it to its initial state, using several Webots methods.
 This method also uses the `simulationResetPhysics()` supervisor method to reset the simulation.
-Lastly, it resets the `self.messageReceived` variable used in the background for robot-supervisor communication.
 
 (mind the indentation of the following code snippets, the following methods all belong inside the 
 *CartpoleSupervisor* class)
