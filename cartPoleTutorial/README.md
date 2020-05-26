@@ -227,8 +227,7 @@ Before we start coding, we should add two scripts, one that contains the RL PPO 
 and the other containing utility functions that we are going to need.
 
 Save both files inside the project directory, under Controllers/supervisorController/
-1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/full_project/controllers/supervisorController/scripts/PPOAgent.py) 
-and click *Save link as...* to download the PPO agent
+1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/full_project/controllers/supervisorController/PPOAgent.py) and click *Save link as...* to download the PPO agent
 2. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/full_project/controllers/supervisorController/utilities.py) and click *Save link as...* to download the utilities script
 
 Now for the imports, we are going to need the numpy library, the deepbots SupervisorCSV class, the PPO agent and the
