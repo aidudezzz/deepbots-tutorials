@@ -1,6 +1,6 @@
 # Deepbots tutorials
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This repository contains all official tutorials created for the 
@@ -22,6 +22,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/tsampazk"><img src="https://avatars.githubusercontent.com/u/27914645?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kostas Tsampazis</b></sub></a><br /><a href="#tutorial-tsampazk" title="Tutorials">✅</a></td>
+    <td align="center"><a href="https://github.com/DataDrover214530"><img src="https://avatars.githubusercontent.com/u/29627216?v=4?s=100" width="100px;" alt=""/><br /><sub><b>DataDrover214530</b></sub></a><br /><a href="https://github.com/aidudezzz/deepbots-tutorials/issues?q=author%3ADataDrover214530" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
