@@ -31,6 +31,17 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "ManosMagnus",
+      "name": "Manos Kirtas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10010230?v=4",
+      "profile": "http://eakirtas.webpages.auth.gr/",
+      "contributions": [
+        "projectManagement",
+        "maintenance",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
