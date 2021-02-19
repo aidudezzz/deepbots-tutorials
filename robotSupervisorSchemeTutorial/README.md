@@ -72,7 +72,7 @@ RL agent.
  
 1. Click on the *Add a new object or import an object* button\
 ![Add new object button](/robotSupervisorSchemeTutorial/images/addNewObjectButtonScreenshot.png)
-2. Click on *Import...*\
+2. Click on *Import...* on the bottom right of the window\
 ![Add Robot node](/robotSupervisorSchemeTutorial/images/importRobotNodeScreenshot.png)
 3. Locate the .wbo file downloaded earlier, select it and click *Open*
 4. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node
