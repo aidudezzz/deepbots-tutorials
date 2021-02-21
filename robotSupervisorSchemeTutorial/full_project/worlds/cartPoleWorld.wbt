@@ -11,14 +11,14 @@ TexturedBackgroundLight {
 }
 RectangleArena {
 }
-DEF SUPERVISOR Robot {
+DEF ROBOT Robot {
   children [
     DEF RECEIVER Receiver {
     }
     DEF EMITTER Emitter {
     }
   ]
-  name "supervisor"
-  controller "supervisor_manager"
+  name "robot"
+  controller "robotSupervisorController"
   supervisor TRUE
 }
