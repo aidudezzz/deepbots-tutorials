@@ -85,50 +85,37 @@ RL agent.
 
 ### Adding the controllers
 
-Now we will create the two basic controller scripts needed to control the *supervisor* and the *robot* nodes.
-Then we are going to assign the *supervisor controller* script to the *supervisor robot* node created before.
-Note that the *CartPole robot* node is going to be loaded into the world through the *supervisor controller* script
-later, but we still need to create its controller.
+Now we will create the controller script needed that contains the environment and the robot controls.
+Then we are going to assign the *robot controller* script to the *robot* node created before.
 
-Creating the *supervisor controller* and *robot controller* scripts:
+Creating the *robotSupervisorController* script:
 1. On the *menu bar*, click *"Wizards -> New Robot Controller..."*\
 ![New robot controller](/robotSupervisorSchemeTutorial/images/newControllerMenuScreenshot.png)
 2. On *Language selection*, select *Python*
-3. Give it the name "*supervisorController*"*
+3. Give it the name "*robotSupervisorController*"*
 4. Press *Finish* 
-5. Repeat from step 1, but on step 3 give the name "*robotController*"
 
 *If you are using an external IDE:    
 1. Un-tick the "open ... in Text Editor" boxes and press *Finish*
-2. Navigate to the project directory, inside the *Controllers/controllerName/* directory
+2. Navigate to the project directory, inside the *controllers/robotSupervisorController/* directory
 3. Open the controller script with your IDE
 
-Two new Python controller scripts should be created and opened in Webots text editor looking like this:\
+The new Python controller script should be created and opened in Webots text editor looking like this:\
 ![New robot controller](/robotSupervisorSchemeTutorial/images/newControllerCreated.png)
 
-Assigning the *supervisorController* to the *supervisor robot* node *controller* field:
-1. Expand the *supervisor robot* node created earlier and scroll down to find the *controller* field
+Assigning the *robotSupervisorController* to the *robot* node *controller* field:
+1. Expand the *robot* node created earlier and scroll down to find the *controller* field
 2. Click on the *controller* field and press the "*Select...*" button below\
 ![New robot controller](/robotSupervisorSchemeTutorial/images/assignSupervisorController1Screenshot.png)
-3. Find the "*supervisorController*" controller from the list and click it\
+3. Find the "*robotSupervisorController*" controller from the list and click it\
 ![New robot controller](/robotSupervisorSchemeTutorial/images/assignSupervisorController2Screenshot.png)
 4. Click *OK*
 5. Click *Save*
 
-### Downloading the CartPole robot node
-
-The *CartPole robot node* definition is supplied for the purposes of the tutorial.
- 
-1. Right-click on 
-[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/supervisorController/CartPoleRobot.wbo) 
-and click *Save link as...* to download the CartPole robot definition 
-2. Save the .wbo file inside the project directory, under Controllers/supervisorController/
-
-
 ### Code overview
 
-Before delving into writing code, we take a look at the general workflow of the framework. We will create two classes 
-that inherit the *deepbots framework* classes and write implementations for several key methods, specific for the 
+Before delving into writing code, we take a look at the general workflow of the framework. We will create a class 
+that inherits a *deepbots framework* class and write implementations for several key methods, specific for the 
 *CartPole* problem.
 
 We will be implementing the basic methods *get_observations*, *get_reward*, *is_done* and *reset*, used for RL based 
@@ -142,26 +129,33 @@ We will also be implementing methods that will be used by the *handle_emitter* a
 The following diagram loosely defines the general workflow of the framework:\
 ![deepbots workflow](/robotSupervisorSchemeTutorial/images/workflowDiagram.png)
 
-The *robot controller* will gather data from the *robot's* sensors and send it to the *supervisor controller*. The 
-*supervisor controller* will use the data received and extra data to compose the *observation* for the agent. Then, 
-using the *observation* the *agent* will perform a forward pass and return an *action*. Then the *supervisor controller* 
-will send the *action* back to the *robot controller*, which will perform the *action* on the *robot*. This closes the 
-loop, that repeats until a termination condition is met, defined in the *is_done* method. 
+The *robot controller* will gather data from the *robot's* sensors and pack it to compose the *observation* for the 
+agent using the *get_observations* method that we will implement. Then, using the *observation* the *agent* will 
+perform a forward pass and return an *action*. Then the *robot controller* will use the *action* with the 
+*apply_action* method, which will perform the *action* on the *robot*. 
+This closes the loop that repeats until a termination condition is met, defined in the *is_done* method. 
 
 
-### Writing the scripts
+### Writing the script
 
-Now we are ready to start writing the *robot controller* and *supervisor controller* scripts.
-It is recommended to delete the contents of the two scripts that were automatically created. 
+Now we are ready to start writing the *robotSupervisorController* script.
+It is recommended to delete the contents of the script that were automatically created. 
 
-### Robot controller script
+### RobotSupervisor controller script
 
-First, we will write the *robot controller* script. In this script we will import the *RobotEmitterReceiverCSV*
-class from the *deepbots framework* and inherit it into our own *CartPoleRobot* class. Then, we are going to
-implement the two basic framework methods *create_message* and *use_message_data*. The former gathers data from the 
-*Robot*'s sensors and packs it into a string message to be sent to the *supervisor controller* script. The latter 
-unpacks messages sent by the *supervisor* that contain the next action, and uses the data to move the *CartPoleRobot* 
-forward and backward.
+In this script we will import the *RobotSupervisor* class from the *deepbots framework* and inherit it into our own 
+*CartPoleRobot* class. Then, we are going to implement the various basic framework methods:
+1. *get_observations* which will create the *observation* for our agent in each step
+2. *get_reward* which will return the reward for agent for each step
+3. *is_done* which will look for the episode done condition
+4. *solved* which will look for a condition that shows that the agent is fully trained and able to solve the problem 
+   adequately
+5. *get_default_observation* which is used by the *reset* method that the framework implements
+6. *apply_action* which will take the action provided by the agent and apply it to the robot by setting its 
+   motors' speeds
+7. *setup_motors* which will set up the robot's motors, and finally
+8. provided dummy implementations for *get_info* and *render* required by the *gym.Env* class that is inherited
+
 
 The only import we are going to need is the *RobotEmitterReceiverCSV* class.
 ```python
