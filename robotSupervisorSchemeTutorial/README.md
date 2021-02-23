@@ -62,7 +62,7 @@ You should end up with:\
 First of all we will download the *CartPole robot node* definition that is supplied for the purposes of the tutorial.
  
 1. Right-click on
-TODO Fix link [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/new-tut/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/CartPoleRobot.wbo) 
+[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/CartPoleRobot.wbo) 
 and click *Save link as...* to download the CartPole robot definition 
 2. Save the .wbo file in a directory of your choice, where you can easily find it later.
 
@@ -154,8 +154,8 @@ Before we start coding, we should add two scripts, one that contains the RL PPO 
 and the other containing utility functions that we are going to need.
 
 Save both files inside the project directory, under Controllers/robotSupervisorController/
-1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/supervisorController/PPOAgent.py) and click *Save link as...* to download the PPO agent
-2. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/supervisorController/utilities.py) and click *Save link as...* to download the utilities script
+1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/PPO_agent.py) and click *Save link as...* to download the PPO agent
+2. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/utilities.py) and click *Save link as...* to download the utilities script
 
 Starting with the imports, first we are going to need the *RobotSupervisor* class and then
 a couple of utility functions, the PPO agent implementation, the gym spaces to define the action and observation spaces
