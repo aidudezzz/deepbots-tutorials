@@ -61,7 +61,7 @@ You should end up with:\
 First of all we will download the *CartPole robot node* definition that is supplied for the purposes of the tutorial.
  
 1. Right-click on
-TODO Fix link [this link]() 
+TODO Fix link [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/new-tut/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/CartPoleRobot.wbo) 
 and click *Save link as...* to download the CartPole robot definition 
 2. Save the .wbo file in a directory of your choice, where you can easily find it later.
 
