@@ -191,5 +191,4 @@ DEF ROBOT Robot {
     mass 2
   }
   controller "robotSupervisorController"
-  supervisor TRUE
 }
