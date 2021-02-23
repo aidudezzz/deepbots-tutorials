@@ -144,12 +144,11 @@ In this script we will import the *RobotSupervisor* class from the *deepbots fra
 2. *get_reward* which will return the reward for agent for each step
 3. *is_done* which will look for the episode done condition
 4. *solved* which will look for a condition that shows that the agent is fully trained and able to solve the problem 
-   adequately
+   adequately (note that this method is not required by the framework, we just add it for convenience)
 5. *get_default_observation* which is used by the *reset* method that the framework implements
 6. *apply_action* which will take the action provided by the agent and apply it to the robot by setting its 
    motors' speeds
-7. *setup_motors* which will set up the robot's motors, and finally
-8. provided dummy implementations for *get_info* and *render* required by the *gym.Env* class that is inherited
+8. dummy implementations for *get_info* and *render* required by the *gym.Env* class that is inherited
 
 Before we start coding, we should add two scripts, one that contains the RL PPO agent, 
 and the other containing utility functions that we are going to need.
@@ -221,7 +220,7 @@ based on the problem's definition. This concludes the `__init__()` method.
         self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
 ```        
 
-After the initialization we start implementing the various methods needed. We start with the `def get_observations()`
+After the initialization we start implementing the various methods needed. We start with the `get_observations()`
 method, which creates the agent's input from various information observed from the Webots world and returns it. We use
 the `normalizeToRange()` utility method to normalize the values into the `[-1.0, 1.0]` range.
 
@@ -229,7 +228,7 @@ We will start by getting the CartPole robot node position and velocity on the z 
 its forward/backward movement. We then read the position sensor value that returns the angle off vertical of the pole.
 Finally, we get the pole tip velocity from the poleEndpoint node we defined earlier.
 
-(mind the indentation, the following methods belong to the *CartPoleRobot* class)
+(mind the indentation, the following methods belong to the *CartpoleRobot* class)
 ```python
     def get_observations(self):
         # Position on z axis
@@ -362,7 +361,7 @@ We start by calling the `agent.work()` method, by providing it with the current 
 is the zero vector returned by the `reset()` method. The `reset()` method actually uses the `get_default_observation()`
 method we defined earlier. The `work()` method implements the forward pass of the agent's 
 actor neural network, providing us with the next action. As the comment suggests the PPO algorithm implements 
-exploration by sampling for the probability distribution the agent outputs from its actor's softmax output layer.
+exploration by sampling the probability distribution the agent outputs from its actor's softmax output layer.
 
 ```python
     for step in range(env.stepsPerEpisode):
@@ -447,8 +446,10 @@ least to see the agent becoming visibly better at moving under the pole to balan
 achieve the *solved* condition, but when it does, it becomes quite good at balancing the pole! You can even apply forces 
 in real time by pressing Alt - left-click and drag on the robot or the pole.
 
-That's it for this tutorial! We welcome you to leave comments and feedback for the tutorial on the relevant 
+That's it for this tutorial! :)
+
+**_We welcome you to leave comments and feedback for the tutorial on the relevant 
 [discussions page](https://github.com/aidudezzz/deepbots-tutorials/discussions/12) or to open an issue for any 
-problem you might face with the tutorial. :)
+problem you find in it!_**
 
 ![Solved cartpole demonstration](/robotSupervisorSchemeTutorial/images/cartPoleWorld.gif)
