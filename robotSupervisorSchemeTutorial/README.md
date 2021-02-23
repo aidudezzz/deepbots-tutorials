@@ -320,13 +320,13 @@ Finally, it all comes together inside the RL training loop. Now we initialize th
 by our reward function and achieve the solved condition defined.
 
 First we initialize a supervisor object and then initialize the PPO agent, providing it with the observation and action
-spaces. Note that we extract the number 4 as numberOfInputs and number 2 as numberOfOutputs from the gym spaces,
+spaces. Note that we extract the number 4 as numberOfInputs and number 2 as numberOfActorOutputs from the gym spaces,
 because the algorithm implementation expects integers for these arguments to initialize the neural network's input and
 output neurons.
 
 ```python
-env = CartPoleRobot()
-agent = PPOAgent(numberOfInputs=env.observation_space.shape[0], numberOfOutputs=env.action_space.n)
+env = CartpoleRobot()
+agent = PPOAgent(numberOfInputs=env.observation_space.shape[0], numberOfActorOutputs=env.action_space.n)
 ```
 
 Then we set the `solved` flag to `false`. This flag is used to terminate the training loop and signifies whether 
@@ -345,7 +345,6 @@ starting observation. We also reset the episode score to zero.
 (please be mindful of the indentation on the following code, because we are about to define several levels of nested
 loops and ifs)
 ```python
-# Run outer loop until the episodes limit is reached or the task is solved
 # Run outer loop until the episodes limit is reached or the task is solved
 while not solved and episodeCount < episodeLimit:
     observation = env.reset()  # Reset robot and get starting observation
