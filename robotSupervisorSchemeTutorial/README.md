@@ -163,7 +163,7 @@ and finally numpy, which is installed as a dependency of the libraries we alread
 ```python
 from deepbots.supervisor.controllers.robot_supervisor import RobotSupervisor
 from utilities import normalizeToRange, plotData
-from agent.PPO_agent import PPOAgent, Transition
+from PPO_agent import PPOAgent, Transition
 
 from gym.spaces import Box, Discrete
 import numpy as np
@@ -194,8 +194,6 @@ and one for the backward movement of the robot.
                                      high=np.array([0.4, np.inf, 1.3, np.inf]),
                                      dtype=np.float64)
         self.action_space = Discrete(2)
-        self.positionSensor = self.robot.getPositionSensor("polePosSensor")
-        self.positionSensor.enable(self.get_timestep())
 ```
 We then get a reference to the robot node, initialize the pole sensor, get a reference for the pole endpoint and 
 initialize the wheel motors.
@@ -207,7 +205,7 @@ initialize the wheel motors.
         self.poleEndpoint = self.getFromDef("POLE_ENDPOINT")
         self.wheels = []
         for wheelName in ['wheel1', 'wheel2', 'wheel3', 'wheel4']:
-            wheel = self.robot.getMotor(wheelName)  # Get the wheel handle
+            wheel = self.getDevice(wheelName)  # Get the wheel handle
             wheel.setPosition(float('inf'))  # Set starting position
             wheel.setVelocity(0.0)  # Zero out starting velocity
             self.wheels.append(wheel)
@@ -414,7 +412,7 @@ loop.
 
 (note that the following code snippet is part of the outer loop)
 ```python
-    print("Episode #", episodeCount, "score:", episodeScore)
+    print("Episode #", episodeCount, "score:", env.episodeScore)
     episodeCount += 1  # Increment episode counter
 ```
 
