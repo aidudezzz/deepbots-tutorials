@@ -1,5 +1,4 @@
-#VRML_OBJ R2021a utf8
-
+#VRML_OBJ R2019a utf8
 DEF ROBOT Robot {
   translation 0 0.045 0
   rotation 0 0 -0.9999999999999978 0
@@ -44,7 +43,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 3.4093101636300793e-15 -2.310247584575832e-15 1 1.570800000000688
+        rotation 7.521008461911655e-18 -8.0003578114037e-18 1 1.5708000000006916
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -76,7 +75,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.545496399166835e-15 -3.173532351701928e-15 1 1.5708000000006868
+        rotation 1.6144526665403072e-17 -1.664595878564559e-17 1 1.5708000000006936
         children [
           USE WHEEL
         ]
@@ -98,7 +97,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 4.840395562244277e-15 -6.17497189066123e-15 1 1.5708000000006865
+        rotation 4.413522625413235e-17 -4.463071500480473e-17 1 1.5708000000006943
         children [
           USE WHEEL
         ]
@@ -120,7 +119,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.0340057357772021e-15 1.819050572700453e-15 1 1.5708000000006888
+        rotation -5.79803970566192e-17 5.781849355181443e-17 1 1.5708000000006928
         children [
           USE WHEEL
         ]
@@ -143,8 +142,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220388e-06 0.5299968874104781 -2.4471250498860302e-14
-        rotation -2.455739585222968e-14 2.4400387779702282e-14 1 1.5708000033841247
+        translation -1.8379558561220528e-06 0.5299968874104791 -3.2769100877788147e-16
+        rotation -3.5856528389015365e-16 3.474010986854722e-16 1 1.5708000033841336
         children [
           DEF POLE_ENDPOINT Solid {
             translation 0.5000000000000002 0 0
