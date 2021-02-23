@@ -11,7 +11,7 @@ The first parts of the tutorial are identical to the
 [original CartPole tutorial](https://github.com/aidudezzz/deepbots-tutorials/tree/master/cartPoleTutorial) that uses the 
 [emitter-receiver scheme](https://github.com/aidudezzz/deepbots#emitter---receiver-scheme), so one can follow either
 one, depending on their use-case. Mainly, if you desire to set up a more complicated example that might use multiple
-robot or similar, refer to the emitter-receiver tutorial to get started.
+robots or similar, refer to the emitter-receiver tutorial to get started.
 
 Keep in mind that the tutorial is very detailed and many parts can be completed really fast by an 
 experienced user. The tutorial assumes no familiarity with the [Webots](https://cyberbotics.com/) simulator.
@@ -21,9 +21,10 @@ We will recreate the [CartPole](https://gym.openai.com/envs/CartPole-v0/) proble
 [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
 
-We will focus on creating the project, the world and the controller scripts and how to use the *deepbots framework*.
-For the purposes of the tutorial, a basic implementation of the PPO algorithm.  For guides on how to construct a 
-custom robot, please visit the official Webots [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
+We will focus on creating the project, the world and the controller script and how to use the *deepbots framework*.
+For the purposes of the tutorial, a basic implementation of the PPO algorithm is provided. For guides on how to 
+construct a custom robot, please visit the official Webots 
+[tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
 
 You can check the complete example [here](/robotSupervisorSchemeTutorial/full_project) with all the scripts and nodes 
 used in this tutorial.
@@ -67,7 +68,7 @@ and click *Save link as...* to download the CartPole robot definition
 
 Now that the project and the starting world are created, we are going to create our *robot*, that also has *supervisor*
 privileges. Later, we will add the *controller* script, through which we will be able to handle several 
-aspects of the simulation needed for RL (e.g. resetting), but also control the robot with the actions produced by the 
+aspects of the simulation needed for RL, but also control the robot with the actions produced by the 
 RL agent.
  
 1. Click on the *Add a new object or import an object* button\
@@ -122,12 +123,6 @@ We will be implementing the basic methods *get_observations*, *get_reward*, *is_
 on the [OpenAI Gym](https://gym.openai.com/) framework logic, that will be contained in the *robotSupervisorController*. 
 These methods will compose the *environment* for the RL algorithm. The *robotSupervisorController* will also contain the 
 RL *agent*, that will receive *observations* and output *actions*.
-
-We will also be implementing methods that will be used by the *handle_emitter* and *handle_receiver* methods on the 
-*robot controller* to send and receive data between the *robot* and the *supervisor*.
-
-The following diagram loosely defines the general workflow of the framework:\
-![deepbots workflow](/robotSupervisorSchemeTutorial/images/workflowDiagram.png)
 
 The *robot controller* will gather data from the *robot's* sensors and pack it to compose the *observation* for the 
 agent using the *get_observations* method that we will implement. Then, using the *observation* the *agent* will 
@@ -452,6 +447,8 @@ least to see the agent becoming visibly better at moving under the pole to balan
 achieve the *solved* condition, but when it does, it becomes quite good at balancing the pole! You can even apply forces 
 in real time by pressing Alt - left-click and drag on the robot or the pole.
 
-That's it for this tutorial! :)
+That's it for this tutorial! We welcome you to leave comments and feedback for the tutorial on the relevant 
+[discussions page](https://github.com/aidudezzz/deepbots-tutorials/discussions/12) or to open an issue for any 
+problem you might face with the tutorial. :)
 
 ![Solved cartpole demonstration](/robotSupervisorSchemeTutorial/images/cartPoleWorld.gif)
