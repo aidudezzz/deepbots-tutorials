@@ -1,6 +1,6 @@
 # CartPole Beginner Tutorial
 
-![Solved cartpole demonstration](/cartPoleTutorial/images/cartPoleWorld.gif)
+![Solved cartpole demonstration](/emitterReceiverSchemeTutorial/images/cartPoleWorld.gif)
 
 This tutorial explains how to use the [*deepbots framework*](https://github.com/aidudezzz/deepbots) by setting 
 up a simple problem. We will use the 
@@ -23,7 +23,7 @@ For the purposes of the tutorial, a basic implementation of the PPO algorithm, t
 node definition are supplied.  For guides on how to construct a custom robot, please visit the official Webots 
 [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
 
-You can check the complete example [here](/cartPoleTutorial/full_project) with all the scripts and nodes used
+You can check the complete example [here](/emitterReceiverSchemeTutorial/full_project) with all the scripts and nodes used
 in this tutorial.
 The CartPole example is available (with some added code for plots/monitoring and keyboard controls) on the 
 [deepworlds](https://github.com/aidudezzz/deepworlds/) repository.
@@ -44,15 +44,15 @@ For this tutorial you will also need to [install PyTorch](https://pytorch.org/ge
 Now we are ready to start working on the *CartPole* problem. First of all, we should create a new project.
 
 1. Open Webots and on the menu bar, click *"Wizards -> New Project Directory..."*\
-    ![New project menu option](/cartPoleTutorial/images/newProjectMenuScreenshot.png)
+    ![New project menu option](/emitterReceiverSchemeTutorial/images/newProjectMenuScreenshot.png)
 2. Select a directory of your choice
 3. On world settings **all** boxes should be ticked\
-    ![World settings](/cartPoleTutorial/images/worldSettingsScreenshot.png)
+    ![World settings](/emitterReceiverSchemeTutorial/images/worldSettingsScreenshot.png)
 4. Give your world a name, e.g. "cartPoleWorld.wbt"
 5. Press Finish
 
 You should end up with:\
-![Project created](/cartPoleTutorial/images/projectCreatedScreenshot.png)
+![Project created](/emitterReceiverSchemeTutorial/images/projectCreatedScreenshot.png)
 
 
 ### Adding a *supervisor robot* node in the world
@@ -62,20 +62,20 @@ a *supervisor*. Later, we will add the *supervisor controller* script, through w
 aspects of the simulation needed for RL (e.g. resetting).
  
 1. Click on the *Add a new object or import an object* button\
-![Add new object button](/cartPoleTutorial/images/addNewObjectButtonScreenshot.png)
+![Add new object button](/emitterReceiverSchemeTutorial/images/addNewObjectButtonScreenshot.png)
 2. Click on *Base nodes -> Robot*\
-![Add Robot node](/cartPoleTutorial/images/addRobotNodeScreenshot.png)
+![Add Robot node](/emitterReceiverSchemeTutorial/images/addRobotNodeScreenshot.png)
 3. Click *Add*. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node
 4. Click on the *Robot* node and set its DEF  field below to "supervisor" to make it easily distinguishable
 5. Double click on the *Robot* node to expand it
 6. Scroll down to find the *supervisor* field and set it to TRUE\
-![Set supervisor to TRUE](/cartPoleTutorial/images/setSupervisorTrueScreenshot.png)
+![Set supervisor to TRUE](/emitterReceiverSchemeTutorial/images/setSupervisorTrueScreenshot.png)
 7. On the *children* field, right-click and select *Add new*
 8. Expand the *Base nodes* and find *Emitter*
 9. Select it and on the lower right press *Add*
 10. Repeat from step 7, but this time add the *Receiver* node
 11. Click *Save*\
-![Click save button](/cartPoleTutorial/images/clickSaveButtonScreenshot.png)
+![Click save button](/emitterReceiverSchemeTutorial/images/clickSaveButtonScreenshot.png)
 
 
 ### Adding the controllers
@@ -87,7 +87,7 @@ later, but we still need to create its controller.
 
 Creating the *supervisor controller* and *robot controller* scripts:
 1. On the *menu bar*, click *"Wizards -> New Robot Controller..."*\
-![New robot controller](/cartPoleTutorial/images/newControllerMenuScreenshot.png)
+![New robot controller](/emitterReceiverSchemeTutorial/images/newControllerMenuScreenshot.png)
 2. On *Language selection*, select *Python*
 3. Give it the name "*supervisorController*"*
 4. Press *Finish* 
@@ -99,14 +99,14 @@ Creating the *supervisor controller* and *robot controller* scripts:
 3. Open the controller script with your IDE
 
 Two new Python controller scripts should be created and opened in Webots text editor looking like this:\
-![New robot controller](/cartPoleTutorial/images/newControllerCreated.png)
+![New robot controller](/emitterReceiverSchemeTutorial/images/newControllerCreated.png)
 
 Assigning the *supervisorController* to the *supervisor robot* node *controller* field:
 1. Expand the *supervisor robot* node created earlier and scroll down to find the *controller* field
 2. Click on the *controller* field and press the "*Select...*" button below\
-![New robot controller](/cartPoleTutorial/images/assignSupervisorController1Screenshot.png)
+![New robot controller](/emitterReceiverSchemeTutorial/images/assignSupervisorController1Screenshot.png)
 3. Find the "*supervisorController*" controller from the list and click it\
-![New robot controller](/cartPoleTutorial/images/assignSupervisorController2Screenshot.png)
+![New robot controller](/emitterReceiverSchemeTutorial/images/assignSupervisorController2Screenshot.png)
 4. Click *OK*
 5. Click *Save*
 
@@ -115,7 +115,7 @@ Assigning the *supervisorController* to the *supervisor robot* node *controller*
 The *CartPole robot node* definition is supplied for the purposes of the tutorial.
  
 1. Right-click on 
-[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/full_project/controllers/supervisorController/CartPoleRobot.wbo) 
+[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/emitterReceiverSchemeTutorial/full_project/controllers/supervisorController/CartPoleRobot.wbo) 
 and click *Save link as...* to download the CartPole robot definition 
 2. Save the .wbo file inside the project directory, under Controllers/supervisorController/
 
@@ -135,7 +135,7 @@ We will also be implementing methods that will be used by the *handle_emitter* a
 *robot controller* to send and receive data between the *robot* and the *supervisor*.
 
 The following diagram loosely defines the general workflow of the framework:\
-![deepbots workflow](/cartPoleTutorial/images/workflowDiagram.png)
+![deepbots workflow](/emitterReceiverSchemeTutorial/images/workflowDiagram.png)
 
 The *robot controller* will gather data from the *robot's* sensors and send it to the *supervisor controller*. The 
 *supervisor controller* will use the data received and extra data to compose the *observation* for the agent. Then, 
@@ -234,8 +234,8 @@ Before we start coding, we should add two scripts, one that contains the RL PPO 
 and the other containing utility functions that we are going to need.
 
 Save both files inside the project directory, under Controllers/supervisorController/
-1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/full_project/controllers/supervisorController/PPOAgent.py) and click *Save link as...* to download the PPO agent
-2. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/cartPoleTutorial/full_project/controllers/supervisorController/utilities.py) and click *Save link as...* to download the utilities script
+1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/emitterReceiverSchemeTutorial/full_project/controllers/supervisorController/PPOAgent.py) and click *Save link as...* to download the PPO agent
+2. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/emitterReceiverSchemeTutorial/full_project/controllers/supervisorController/utilities.py) and click *Save link as...* to download the utilities script
 
 Now for the imports, we are going to need the numpy library, the deepbots SupervisorCSV class, the PPO agent and the
 utilities.
@@ -538,7 +538,7 @@ while True:
 
 Now with the coding done you can click on the *Run the simulation* button and watch the training run!
  
-![Run the simulation](/cartPoleTutorial/images/clickPlay.png)\
+![Run the simulation](/emitterReceiverSchemeTutorial/images/clickPlay.png)\
 Webots allows to speed up the simulation, even run it without graphics, so the training shouldn't take long, at 
 least to see the agent becoming visibly better at moving under the pole to balance it. It takes a while for it to 
 achieve the *solved* condition, but when it does it becomes quite good at balancing the pole! You can even apply forces 
@@ -546,4 +546,4 @@ in real time by pressing Alt - left-click and drag on the robot or the pole.
 
 That's it for this tutorial! :)
 
-![Solved cartpole demonstration](/cartPoleTutorial/images/cartPoleWorld.gif)
+![Solved cartpole demonstration](/emitterReceiverSchemeTutorial/images/cartPoleWorld.gif)
