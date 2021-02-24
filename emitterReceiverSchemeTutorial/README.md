@@ -1,4 +1,4 @@
-# CartPole Beginner Tutorial
+# CartPole Emitter-Receiver Scheme Tutorial
 
 ![Solved cartpole demonstration](/emitterReceiverSchemeTutorial/images/cartPoleWorld.gif)
 
@@ -545,5 +545,9 @@ achieve the *solved* condition, but when it does it becomes quite good at balanc
 in real time by pressing Alt - left-click and drag on the robot or the pole.
 
 That's it for this tutorial! :)
+
+**_We welcome you to leave comments and feedback for the tutorial on the relevant 
+[discussions page](https://github.com/aidudezzz/deepbots-tutorials/discussions/15) or to open an issue for any 
+problem you find in it!_**
 
 ![Solved cartpole demonstration](/emitterReceiverSchemeTutorial/images/cartPoleWorld.gif)

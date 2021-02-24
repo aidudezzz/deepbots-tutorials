@@ -1,4 +1,4 @@
-# CartPole Beginner Tutorial
+# CartPole Beginner Robot-Supervisor Scheme Tutorial
 
 ![Solved cartpole demonstration](/robotSupervisorSchemeTutorial/images/cartPoleWorld.gif)
 
