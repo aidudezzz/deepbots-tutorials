@@ -10,9 +10,12 @@ This repository contains all official tutorials created for the
 <br>Illustrates step-by-step the creation of a [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem in 
 [Webots](https://cyberbotics.com/) and solves it by using the 
 [deepbots framework](https://github.com/aidudezzz/deepbots) and the
-[Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) Reinforcement Learning algorithm.
+[Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) Reinforcement Learning algorithm. 
+This tutorial uses the [robot-supervisor scheme](https://github.com/aidudezzz/deepbots#combined-robot-supervisor-scheme).
 - [CartPole tutorial using the emitter-receiver scheme](/emitterReceiverSchemeTutorial/README.md):
-<br> Follow this tutorial to get started with the emitter-receiver scheme which is useful for setting up more 
+<br> Follow this tutorial to get started with the 
+[emitter-receiver scheme](https://github.com/aidudezzz/deepbots#emitter---receiver-scheme) 
+which is useful for setting up more 
 complicated examples, such as having a single RL agent controlling multiple robots. This scheme separates the robot and 
 the RL agent in different Webots nodes. This example also includes a custom implementation of the reset procedure.-  
 ## Contributors ✨
