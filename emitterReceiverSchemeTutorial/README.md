@@ -3,7 +3,14 @@
 ![Solved cartpole demonstration](/cartPoleTutorial/images/cartPoleWorld.gif)
 
 This tutorial explains how to use the [*deepbots framework*](https://github.com/aidudezzz/deepbots) by setting 
-up a simple problem. Keep in mind that the tutorial is very detailed and many parts can be completed really fast by an 
+up a simple problem. We will use the 
+[emitter-receiver scheme](https://github.com/aidudezzz/deepbots#emitter---receiver-scheme) which is appropriate for
+more complicated use-cases, such as setting up multiple robots. For simple use cases of a single robot, please use the 
+[robot-supervisor scheme tutorial](https://github.com/aidudezzz/deepbots-tutorials/tree/master/robotSupervisorSchemeTutorial).
+Moreover, we will implement a custom reset procedure, which is not actually needed as seen in the robot-supervisor 
+scheme tutorial, but might be useful for some use-cases.
+
+Keep in mind that the tutorial is very detailed and many parts can be completed really fast by an 
 experienced user. The tutorial assumes no familiarity with the [Webots](https://cyberbotics.com/) simulator.
 
 We will recreate the [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem step-by-step in 
