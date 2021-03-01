@@ -33,6 +33,11 @@ The CartPole example is available on the [deepworlds](https://github.com/aidudez
 
 ## Prerequisites
 
+_Please note that this tutorial targets the newest deepbots release (0.1.3) which is currently in development,
+you can install the dev version with this command:_
+
+_`pip install -i https://test.pypi.org/simple/ deepbots`_
+
 Before starting, several prerequisites should be met. Follow the [installation section on the deepbots framework main 
 repository](https://github.com/aidudezzz/deepbots#installation).
 
