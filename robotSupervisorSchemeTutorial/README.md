@@ -75,7 +75,8 @@ Now that the project and the starting world are created, we are going to create 
 privileges. Later, we will add the *controller* script, through which we will be able to handle several 
 aspects of the simulation needed for RL, but also control the robot with the actions produced by the 
 RL agent.
- 
+
+(Make sure the simulation is stopped and reset to its original state, by pressing the pause button and then the reset button)
 1. Click on the *Add a new object or import an object* button\
 ![Add new object button](/robotSupervisorSchemeTutorial/images/addNewObjectButtonScreenshot.png)
 2. Click on *Import...* on the bottom right of the window\
@@ -186,7 +187,7 @@ values and is defined by the table below:
 
 Num | Observation | Min | Max
 ----|-------------|-----|----
-0 | Cart Position z axis | -0.4 | 0.4
+0 | Cart Position x axis | -0.4 | 0.4
 1 | Cart Velocity | -Inf | Inf
 2 | Pole Angle | -1.3 rad | 1.3 rad
 3 | Pole Velocity at Tip | -Inf | Inf
@@ -227,21 +228,21 @@ After the initialization we start implementing the various methods needed. We st
 method, which creates the agent's input from various information observed from the Webots world and returns it. We use
 the `normalizeToRange()` utility method to normalize the values into the `[-1.0, 1.0]` range.
 
-We will start by getting the CartPole robot node position and velocity on the z axis. The z axis is the direction of 
+We will start by getting the CartPole robot node position and velocity on the x axis. The x axis is the direction of 
 its forward/backward movement. We then read the position sensor value that returns the angle off vertical of the pole.
 Finally, we get the pole tip velocity from the poleEndpoint node we defined earlier.
 
 (mind the indentation, the following methods belong to the *CartpoleRobot* class)
 ```python
     def get_observations(self):
-        # Position on z axis
-        cartPosition = normalizeToRange(self.robot.getPosition()[2], -0.4, 0.4, -1.0, 1.0)
-        # Linear velocity on z axis
-        cartVelocity = normalizeToRange(self.robot.getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True)
+        # Position on x axis
+        cartPosition = normalizeToRange(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
+        # Linear velocity on x axis
+        cartVelocity = normalizeToRange(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
         # Pole angle off vertical
         poleAngle = normalizeToRange(self.positionSensor.getValue(), -0.23, 0.23, -1.0, 1.0, clip=True)
-        # Angular velocity x of endpoint
-        endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[3], -1.5, 1.5, -1.0, 1.0, clip=True)
+        # Angular velocity y of endpoint
+        endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[4], -1.5, 1.5, -1.0, 1.0, clip=True)
 
         return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
 ```
