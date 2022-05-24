@@ -452,7 +452,7 @@ in real time by pressing Alt - left-click and drag on the robot or the pole.
 That's it for this tutorial! :)
 
 **_We welcome you to leave comments and feedback for the tutorial on the relevant 
-[discussions page](https://github.com/aidudezzz/deepbots-tutorials/discussions/12) or to open an issue for any 
+[discussions page](https://github.com/aidudezzz/deepbots-tutorials/discussions/12?sort=new) or to open an issue for any 
 problem you find in it!_**
 
 ![Solved cartpole demonstration](/robotSupervisorSchemeTutorial/images/cartPoleWorld.gif)
