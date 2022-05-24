@@ -196,6 +196,5 @@ DEF ROBOT Robot {
     density -1
     mass 2
   }
-  controller "robotSupervisorController"
-  supervisor TRUE
+  controller ""
 }
