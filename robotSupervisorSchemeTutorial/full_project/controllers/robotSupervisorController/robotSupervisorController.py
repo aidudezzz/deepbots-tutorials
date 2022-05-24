@@ -30,10 +30,10 @@ class CartpoleRobot(RobotSupervisor):
         self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
 
     def get_observations(self):
-        # Position on z axis
-        cartPosition = normalizeToRange(self.robot.getPosition()[2], -0.4, 0.4, -1.0, 1.0)
-        # Linear velocity on z axis
-        cartVelocity = normalizeToRange(self.robot.getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True)
+        # Position on x axis
+        cartPosition = normalizeToRange(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
+        # Linear velocity on x axis
+        cartVelocity = normalizeToRange(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
         # Pole angle off vertical
         poleAngle = normalizeToRange(self.positionSensor.getValue(), -0.23, 0.23, -1.0, 1.0, clip=True)
         # Angular velocity x of endpoint
@@ -52,7 +52,7 @@ class CartpoleRobot(RobotSupervisor):
         if abs(poleAngle) > 0.261799388:  # 15 degrees off vertical
             return True
 
-        cartPosition = round(self.robot.getPosition()[2], 2)  # Position on z axis
+        cartPosition = round(self.robot.getPosition()[0], 2)  # Position on x axis
         if abs(cartPosition) > 0.39:
             return True
 
