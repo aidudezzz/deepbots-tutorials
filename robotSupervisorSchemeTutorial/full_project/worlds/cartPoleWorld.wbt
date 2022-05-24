@@ -1,10 +1,9 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2022a utf8
 WorldInfo {
-  coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.2502553827759296 0.9352548038381302 0.25034115780145616 1.613412031407163
-  position 2.508273333120465 1.9315626407911484 0.06360733796756712
+  orientation -0.30752878071170836 0.2783551627793364 0.9099145302653756 1.7916610210008688
+  position 0.33209743381602985 -2.4099563766391823 1.9583415278960101
 }
 TexturedBackground {
 }
@@ -13,8 +12,8 @@ TexturedBackgroundLight {
 RectangleArena {
 }
 DEF ROBOT Robot {
-  translation 0 0.045 0
-  rotation 0 0 -0.9999999999999978 0
+  translation 0 0 0.04
+  rotation 1 0 0 1.5708
   children [
     DEF EMITTER Emitter {
     }
@@ -22,6 +21,7 @@ DEF ROBOT Robot {
     }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
+      rotation 0 1 0 -1.5707953071795862
       children [
         Shape {
           appearance PBRAppearance {
@@ -41,12 +41,13 @@ DEF ROBOT Robot {
         metalness 0
       }
       geometry Box {
-        size 0.1 0.05 0.2
+        size 0.2 0.05 0.08
       }
     }
     DEF WHEEL1 HingeJoint {
       jointParameters HingeJointParameters {
         position 6.723540149111039e-17
+        axis 0 0 1
         anchor 0.06 0 0.05
       }
       device [
@@ -55,8 +56,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation 0.06 0 0.05
-        rotation 4.1138585722960455e-17 -4.16180585569589e-17 1 1.5708000000006916
+        translation 0.060001004644818584 1.339276918416963e-05 0.050000010543824816
+        rotation 1.7671082538995992e-08 -1.7671248834016876e-08 0.9999999999999998 1.5708000430119498
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -79,6 +80,7 @@ DEF ROBOT Robot {
     DEF WHEEL2 HingeJoint {
       jointParameters HingeJointParameters {
         position 6.670640318240083e-17
+        axis 0 0 1
         anchor -0.06 0 0.05
       }
       device [
@@ -87,8 +89,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -0.06 0 0.05
-        rotation 4.949760574365507e-17 -4.999916037684601e-17 1 1.5708000000006936
+        translation -0.060001095993954395 7.616338723251721e-07 0.05000000952472374
+        rotation 1.76096540431902e-08 -1.7609826183889808e-08 0.9999999999999997 1.5707999569897093
         children [
           USE WHEEL
         ]
@@ -101,6 +103,7 @@ DEF ROBOT Robot {
     DEF WHEEL3 HingeJoint {
       jointParameters HingeJointParameters {
         position 1.0324509589061627e-16
+        axis 0 0 1
         anchor 0.06 0 -0.05
       }
       device [
@@ -109,8 +112,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation 0.06 0 -0.05
-        rotation 9.575758457954634e-17 -9.625326295011288e-17 1 1.5708000000006943
+        translation 0.06000100379909951 1.3392659934531687e-05 -0.05000000738328558
+        rotation -1.7671380018270767e-08 1.7671539284228046e-08 0.9999999999999998 1.5708000430119113
         children [
           USE WHEEL
         ]
@@ -123,6 +126,7 @@ DEF ROBOT Robot {
     DEF WHEEL4 HingeJoint {
       jointParameters HingeJointParameters {
         position -2.6895122773572173e-17
+        axis 0 0 1
         anchor -0.06 0 -0.05
       }
       device [
@@ -131,8 +135,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -0.06 0 -0.05
-        rotation -7.142790904783557e-17 7.126605493860052e-17 1 1.5708000000006928
+        translation -0.060001096839924606 7.615246225854488e-07 -0.05000000839401549
+        rotation -1.761000837263908e-08 1.761018020913388e-08 0.9999999999999997 1.5707999569897055
         children [
           USE WHEEL
         ]
@@ -145,6 +149,7 @@ DEF ROBOT Robot {
     DEF POLE HingeJoint {
       jointParameters HingeJointParameters {
         position -4.812689688184746e-16
+        axis 0 0 1
         anchor 0 0.03000000000047226 0
         minStop -1.3
         maxStop 1.3
@@ -155,8 +160,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220528e-06 0.5299968874104791 -5.683239951941424e-16
-        rotation -5.991988835868618e-16 5.880355830947095e-16 1 1.5708000033841338
+        translation -0.0004655326854983616 0.5300037594690288 -5.369584240411801e-07
+        rotation -0.57698744109641 -0.577531387769005 0.5775318077462263 2.0949379676602047
         children [
           DEF POLE_ENDPOINT Solid {
             translation 0.5000000000000002 0 0
