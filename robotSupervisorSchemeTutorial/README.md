@@ -2,13 +2,13 @@
 
 ![Solved cartpole demonstration](/robotSupervisorSchemeTutorial/images/cartPoleWorld.gif)
 
-This tutorial shows the creation of the [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem using the updated
+This tutorial shows the creation of the [CartPole](https://www.gymlibrary.ml/environments/classic_control/cart_pole/) problem using the updated
 version of the [*deepbots framework*](https://github.com/aidudezzz/deepbots), utilizing the 
 [robot-supervisor scheme](https://github.com/aidudezzz/deepbots#combined-robot-supervisor-scheme) which combines the
 gym environment and the robot controller in one script, forgoing the emitter and receiver communication.
 
 The first parts of the tutorial are identical to the 
-[original CartPole tutorial](https://github.com/aidudezzz/deepbots-tutorials/tree/master/cartPoleTutorial) that uses the 
+[original CartPole tutorial](https://github.com/aidudezzz/deepbots-tutorials/tree/master/emitterReceiverSchemeTutorial) that uses the 
 [emitter-receiver scheme](https://github.com/aidudezzz/deepbots#emitter---receiver-scheme), so one can follow either
 one, depending on their use-case. Mainly, if you desire to set up a more complicated example that might use multiple
 robots or similar, refer to the emitter-receiver tutorial to get started.
@@ -16,7 +16,7 @@ robots or similar, refer to the emitter-receiver tutorial to get started.
 Keep in mind that the tutorial is very detailed and many parts can be completed really fast by an 
 experienced user. The tutorial assumes no familiarity with the [Webots](https://cyberbotics.com/) simulator.
 
-We will recreate the [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem step-by-step in 
+We will recreate the [CartPole](https://www.gymlibrary.ml/environments/classic_control/cart_pole/) problem step-by-step in 
 [Webots](https://cyberbotics.com/), and solve it with the 
 [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
