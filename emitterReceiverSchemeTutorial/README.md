@@ -13,7 +13,7 @@ scheme tutorial, but might be useful for some use-cases.
 Keep in mind that the tutorial is very detailed and many parts can be completed really fast by an 
 experienced user. The tutorial assumes no familiarity with the [Webots](https://cyberbotics.com/) simulator.
 
-We will recreate the [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem step-by-step in 
+We will recreate the [CartPole](https://www.gymlibrary.ml/environments/classic_control/cart_pole/) problem step-by-step in 
 [Webots](https://cyberbotics.com/), and solve it with the 
 [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
