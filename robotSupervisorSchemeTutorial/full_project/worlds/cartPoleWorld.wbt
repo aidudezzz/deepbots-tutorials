@@ -15,10 +15,6 @@ DEF ROBOT Robot {
   translation 0 0 0.04
   rotation 1 0 0 1.5708
   children [
-    DEF EMITTER Emitter {
-    }
-    DEF RECEIVER Receiver {
-    }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
       rotation 0 1 0 -1.5707953071795862
