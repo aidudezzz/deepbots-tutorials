@@ -11,6 +11,17 @@ TexturedBackgroundLight {
 }
 RectangleArena {
 }
+DEF SUPERVISOR Robot {
+  children [
+    DEF EMITTER Emitter {
+    }
+    DEF RECEIVER Receiver {
+    }
+  ]
+  name "supervisor"
+  controller "supervisorController"
+  supervisor TRUE
+}
 DEF ROBOT Robot {
   translation 0 0 0.04
   rotation 1 0 0 1.5708
@@ -89,7 +100,7 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -0.060001095993954395 7.616338723243338e-07 0.05000000952472374
+        translation -0.060001095993954395 7.616338723243336e-07 0.05000000952472374
         rotation 1.760965404319019e-08 -1.7609826183889798e-08 0.9999999999999997 1.5707999569897086
         children [
           USE WHEEL
@@ -160,8 +171,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -0.00046553268549788974 0.5300037594690286 -5.369584240411798e-07
-        rotation -0.5769874410964103 -0.5775313877690049 0.577531807746226 2.0949379676602047
+        translation -0.00046553268549740846 0.5300037594690286 -5.369584240411798e-07
+        rotation -0.5769874410964105 -0.5775313877690047 0.577531807746226 2.0949379676602047
         children [
           DEF POLE_ENDPOINT Solid {
             translation 0.5000000000000002 0 0
@@ -208,6 +219,5 @@ DEF ROBOT Robot {
     density -1
     mass 2
   }
-  controller "robotSupervisorController"
-  supervisor TRUE
+  controller "robotController"
 }
