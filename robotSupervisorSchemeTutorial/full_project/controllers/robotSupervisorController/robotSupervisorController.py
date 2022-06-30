@@ -1,5 +1,5 @@
 from deepbots.supervisor.controllers.robot_supervisor import RobotSupervisor
-from utilities import normalizeToRange, plotData
+from utilities import normalizeToRange
 from PPO_agent import PPOAgent, Transition
 
 from gym.spaces import Box, Discrete
