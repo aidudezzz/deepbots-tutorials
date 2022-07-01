@@ -31,6 +31,11 @@ The CartPole example is available (with some added code for plots/monitoring and
 
 ## Prerequisites
 
+_Please note that this tutorial targets the newest deepbots release (0.1.3) which is currently in development,
+you can install the dev version with this command:_
+
+_`pip install -i https://test.pypi.org/simple/ deepbots`_
+
 Before starting, several prerequisites should be met. Follow the [installation section on the deepbots framework main 
 repository](https://github.com/aidudezzz/deepbots#installation).
 
@@ -55,18 +60,43 @@ You should end up with:\
 ![Project created](/emitterReceiverSchemeTutorial/images/projectCreatedScreenshot.png)
 
 
-### Adding a *supervisor robot* node in the world
+### Adding a *robot node* and a *supervisor robot* node in the world
 
-Now that the project and the starting world are created, we are going to create a special kind of *robot*, 
+First of all we will download the *CartPole robot node* definition that is supplied for the purposes of the tutorial, 
+we will later import it into the world.
+ 
+1. Right-click on
+[this link](https://github.com/aidudezzz/deepbots-tutorials/blob/master/emitterReceiverSchemeTutorial/full_project/controllers/supervisorController/CartPoleRobot.wbo) 
+and click *Save link as...* to download the CartPole robot definition 
+2. Save the .wbo file in a directory of your choice, where you can easily find it later.
+
+Now we need to import the *CartPole robot* into the world:
+
+(Make sure the simulation is stopped and reset to its original state, by pressing the pause button and then the reset button)
+
+1. Click on the *Add a new object or import an object* button\
+![Add new object button](/emitterReceiverSchemeTutorial/images/addNewObjectButtonScreenshot.png)
+2. Click on *Import...* on the bottom right of the window\
+![Add Robot node](/emitterReceiverSchemeTutorial/images/importRobotNodeScreenshot.png)
+3. Locate the .wbo file downloaded earlier, select it and click *Open*
+4. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node, as well as in the world
+5. Click *Save*\
+![Click save button](/emitterReceiverSchemeTutorial/images/clickSaveButtonScreenshot.png)
+
+The *CartPole robot node* comes ready along with the communication devices needed (an emitter and a receiver) to send and receive data.
+We will later add a *robot contoller* script to control the robot.
+
+Now that the *CartPole robot node* is imported, we are going to create another special kind of *robot*, called
 a *supervisor*. Later, we will add the *supervisor controller* script, through which we will be able to handle several 
-aspects of the simulation needed for RL (e.g. resetting).
+aspects of the simulation needed for RL (e.g. resetting). 
  
 1. Click on the *Add a new object or import an object* button\
 ![Add new object button](/emitterReceiverSchemeTutorial/images/addNewObjectButtonScreenshot.png)
+(If the previously imported node is expanded, collapse it and click on it so the *add* button becomes active again.)
 2. Click on *Base nodes -> Robot*\
 ![Add Robot node](/emitterReceiverSchemeTutorial/images/addRobotNodeScreenshot.png)
 3. Click *Add*. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node
-4. Click on the *Robot* node and set its DEF  field below to "supervisor" to make it easily distinguishable
+4. Click on the *Robot* node and set its DEF  field below to "supervisor"
 5. Double click on the *Robot* node to expand it
 6. Scroll down to find the *supervisor* field and set it to TRUE\
 ![Set supervisor to TRUE](/emitterReceiverSchemeTutorial/images/setSupervisorTrueScreenshot.png)
@@ -77,6 +107,7 @@ aspects of the simulation needed for RL (e.g. resetting).
 11. Click *Save*\
 ![Click save button](/emitterReceiverSchemeTutorial/images/clickSaveButtonScreenshot.png)
 
+# TODO Update below this line
 
 ### Adding the controllers
 
