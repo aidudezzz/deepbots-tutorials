@@ -2,43 +2,36 @@ from deepbots.robots.controllers.robot_emitter_receiver_csv import RobotEmitterR
 
 
 class CartpoleRobot(RobotEmitterReceiverCSV):
-	def __init__(self):
-		super().__init__()
-		self.positionSensor = self.robot.getPositionSensor("polePosSensor")
-		self.positionSensor.enable(self.get_timestep())
-		self.wheel1 = self.robot.getMotor('wheel1')	 # Get the wheel handle
-		self.wheel1.setPosition(float('inf'))  # Set starting position
-		self.wheel1.setVelocity(0.0)  # Zero out starting velocity
-		self.wheel2 = self.robot.getMotor('wheel2')
-		self.wheel2.setPosition(float('inf'))
-		self.wheel2.setVelocity(0.0)
-		self.wheel3 = self.robot.getMotor('wheel3')
-		self.wheel3.setPosition(float('inf'))
-		self.wheel3.setVelocity(0.0)
-		self.wheel4 = self.robot.getMotor('wheel4')
-		self.wheel4.setPosition(float('inf'))
-		self.wheel4.setVelocity(0.0)
-		
-	def create_message(self):
-		# Read the sensor value, convert to string and save it in a list
-		message = [str(self.positionSensor.getValue())]
-		return message
-	
-	def use_message_data(self, message):
-		action = int(message[0])  # Convert the string message into an action integer
+    def __init__(self):
+        super().__init__()
+        self.positionSensor = self.robot.getDevice("polePosSensor")
+        self.positionSensor.enable(self.timestep)
+        self.wheels = []
+        for wheelName in ['wheel1', 'wheel2', 'wheel3', 'wheel4']:
+            wheel = self.robot.getDevice(wheelName)  # Get the wheel handle
+            wheel.setPosition(float('inf'))  # Set starting position
+            wheel.setVelocity(0.0)  # Zero out starting velocity
+            self.wheels.append(wheel)
 
-		if action == 0:
-			motorSpeed = 5.0
-		elif action == 1:
-			motorSpeed = -5.0
-		else:
-			motorSpeed = 0.0
-		
-		# Set the motors' velocities based on the action received
-		self.wheel1.setVelocity(motorSpeed)
-		self.wheel2.setVelocity(motorSpeed)
-		self.wheel3.setVelocity(motorSpeed)
-		self.wheel4.setVelocity(motorSpeed)
+    def create_message(self):
+        # Read the sensor value, convert to string and save it in a list
+        message = [str(self.positionSensor.getValue())]
+        return message
+
+    def use_message_data(self, message):
+        action = int(message[0])  # Convert the string message into an action integer
+
+        if action == 0:
+            motorSpeed = 5.0
+        elif action == 1:
+            motorSpeed = -5.0
+        else:
+            motorSpeed = 0.0
+
+        # Set the motors' velocities based on the action received
+        for i in range(len(self.wheels)):
+            self.wheels[i].setPosition(float('inf'))
+            self.wheels[i].setVelocity(motorSpeed)
 
 
 # Create the robot controller object and run it
