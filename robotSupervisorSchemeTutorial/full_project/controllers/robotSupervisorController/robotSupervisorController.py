@@ -108,7 +108,7 @@ while not solved and episodeCount < episodeLimit:
         if done:
             # Save the episode's score
             env.episodeScoreList.append(env.episodeScore)
-            agent.trainStep(batchSize=step)
+            agent.trainStep(batchSize=step + 1)
             solved = env.solved()  # Check whether the task is solved
             break
 

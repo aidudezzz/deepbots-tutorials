@@ -83,32 +83,32 @@ agent = PPOAgent(supervisor.observationSpace, supervisor.actionSpace)
 solved = False
 # Run outer loop until the episodes limit is reached or the task is solved
 while not solved and supervisor.episodeCount < supervisor.episodeLimit:
-    observation = supervisor.reset()  # Reset robot and get starting observation
-    supervisor.episodeScore = 0
+	observation = supervisor.reset()  # Reset robot and get starting observation
+	supervisor.episodeScore = 0
+	
+	for step in range(supervisor.stepsPerEpisode):
+		# In training mode the agent samples from the probability distribution, naturally implementing exploration
+		selectedAction, actionProb = agent.work(observation, type_="selectAction")
+		# Step the supervisor to get the current selectedAction's reward, the new observation and whether we reached 
+		# the done condition
+		newObservation, reward, done, info = supervisor.step([selectedAction])
 
-    for step in range(supervisor.stepsPerEpisode):
-        # In training mode the agent samples from the probability distribution, naturally implementing exploration
-        selectedAction, actionProb = agent.work(observation, type_="selectAction")
-        # Step the supervisor to get the current selectedAction's reward, the new observation and whether we reached
-        # the done condition
-        newObservation, reward, done, info = supervisor.step([selectedAction])
+		# Save the current state transition in agent's memory
+		trans = Transition(observation, selectedAction, actionProb, reward, newObservation)
+		agent.storeTransition(trans)
+		
+		if done:
+			# Save the episode's score
+			supervisor.episodeScoreList.append(supervisor.episodeScore)
+			agent.trainStep(batchSize=step + 1)
+			solved = supervisor.solved()  # Check whether the task is solved
+			break
 
-        # Save the current state transition in agent's memory
-        trans = Transition(observation, selectedAction, actionProb, reward, newObservation)
-        agent.storeTransition(trans)
-
-        if done:
-            # Save the episode's score
-            supervisor.episodeScoreList.append(supervisor.episodeScore)
-            agent.trainStep(batchSize=step)
-            solved = supervisor.solved()  # Check whether the task is solved
-            break
-
-        supervisor.episodeScore += reward  # Accumulate episode reward
-        observation = newObservation  # observation for next step is current step's newObservation
-
-    print("Episode #", supervisor.episodeCount, "score:", supervisor.episodeScore)
-    supervisor.episodeCount += 1  # Increment episode counter
+		supervisor.episodeScore += reward  # Accumulate episode reward
+		observation = newObservation  # observation for next step is current step's newObservation
+		
+	print("Episode #", supervisor.episodeCount, "score:", supervisor.episodeScore)
+	supervisor.episodeCount += 1  # Increment episode counter
 
 if not solved:
     print("Task is not solved, deploying agent for testing...")
