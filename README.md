@@ -3,7 +3,7 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This repository contains all official tutorials created for the 
@@ -35,6 +35,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/JadarTheObscurity"><img src="https://avatars.githubusercontent.com/u/62043377?v=4?s=100" width="100px;" alt=""/><br /><sub><b>JadarTheObscurity</b></sub></a><br /><a href="#ideas-JadarTheObscurity" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="http://eakirtas.webpages.auth.gr/"><img src="https://avatars.githubusercontent.com/u/10010230?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Manos Kirtas</b></sub></a><br /><a href="#projectManagement-ManosMagnus" title="Project Management">📆</a> <a href="#maintenance-ManosMagnus" title="Maintenance">🚧</a> <a href="#ideas-ManosMagnus" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="http://piyush-555.github.io"><img src="https://avatars.githubusercontent.com/u/34499999?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Piyush Raikwar</b></sub></a><br /><a href="https://github.com/aidudezzz/deepbots-tutorials/issues?q=author%3APiyush-555" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/caozx1110"><img src="https://avatars.githubusercontent.com/u/78025946?v=4?s=100" width="100px;" alt=""/><br /><sub><b>生石灰</b></sub></a><br /><a href="https://github.com/aidudezzz/deepbots-tutorials/issues?q=author%3Acaozx1110" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
