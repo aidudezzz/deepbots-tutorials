@@ -113,7 +113,7 @@ while not solved and supervisor.episodeCount < supervisor.episodeLimit:
 		if done:
 			# Save the episode's score
 			supervisor.episodeScoreList.append(supervisor.episodeScore)
-			agent.trainStep(batchSize=step)
+			agent.trainStep(batchSize=step + 1)
 			solved = supervisor.solved()  # Check whether the task is solved
 			break
 
