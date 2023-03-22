@@ -7,20 +7,31 @@ up a simple problem. We will use the
 [emitter-receiver scheme](https://github.com/aidudezzz/deepbots#emitter---receiver-scheme) which is appropriate for
 more complicated use-cases, such as setting up multiple robots. For simple use cases of a single robot, please use the 
 [robot-supervisor scheme tutorial](https://github.com/aidudezzz/deepbots-tutorials/tree/master/robotSupervisorSchemeTutorial).
-Moreover, we will implement a custom reset procedure, which is not actually needed as seen in the robot-supervisor 
-scheme tutorial, but might be useful for some use-cases.
+
+
+~~Moreover, we will implement a custom reset procedure, which is not actually needed as seen in the robot-supervisor 
+scheme tutorial, but might be useful for some use-cases.~~ 
+
+_Since the original tutorial was written, Webots was updated and now provides 
+[more options to reset the world](https://cyberbotics.com/doc/reference/supervisor?tab-language=python#resetreload-matrix), 
+and thus the old custom reset procedure is not needed anymore.
+The reset method provided by the deepbots framework is enough for most use-cases. Of course, deepbots design philosophy allows
+you to override the reset method and provide your own implementation that fits your problem best. We do it ourselves in some of 
+our examples in [deepworlds](https://github.com/aidudezzz/deepworlds)! You can check out a pretty involved custom reset method 
+that entirely overrides the built-in reset method 
+[here.](https://github.com/aidudezzz/deepworlds/blob/f3f286d5c3df5ca858745a40111a2834001e15e7/examples/find_and_avoid_v2/controllers/robot_supervisor_manager/find_and_avoid_v2_robot_supervisor.py#L713-L802)_
 
 Keep in mind that the tutorial is very detailed and many parts can be completed really fast by an 
 experienced user. The tutorial assumes no familiarity with the [Webots](https://cyberbotics.com/) simulator.
 
-We will recreate the [CartPole](https://www.gymlibrary.ml/environments/classic_control/cart_pole/) problem step-by-step in 
+We will recreate the [CartPole](https://www.gymlibrary.dev/environments/classic_control/cart_pole/) problem step-by-step in 
 [Webots](https://cyberbotics.com/), and solve it with the 
 [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
 
 We will focus on creating the project, the world and the controller scripts and how to use the *deepbots framework*.
-For the purposes of the tutorial, a basic implementation of the PPO algorithm, together with the custom CartPole robot 
-node definition are supplied.  For guides on how to construct a custom robot, please visit the official Webots 
+For the purposes of the tutorial, a basic implementation of the PPO algorithm, together with a custom CartPole robot 
+node contained within the world are supplied. For guides on how to construct a custom robot, please visit the official Webots 
 [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
 
 You can check the complete example [here](/emitterReceiverSchemeTutorial/full_project) with all the scripts and nodes used
@@ -31,81 +42,73 @@ The CartPole example is available (with some added code for plots/monitoring and
 
 ## Prerequisites
 
-_Please note that this tutorial targets the newest deepbots release (0.1.3) which is currently in development,
-you can install the dev version with this command:_
-
-_`pip install -i https://test.pypi.org/simple/ deepbots`_
-
 Before starting, several prerequisites should be met. Follow the [installation section on the deepbots framework main 
 repository](https://github.com/aidudezzz/deepbots#installation).
 
 For this tutorial you will also need to [install PyTorch](https://pytorch.org/get-started/locally/) 
-(no CUDA/GPU support needed for this tutorial).
-
+(no CUDA/GPU support needed for this simple example as the very small neural networks used are sufficient to solve the task).
 
 ## CartPole
 ### Creating the project
 
 Now we are ready to start working on the *CartPole* problem. First of all, we should create a new project.
 
-1. Open Webots and on the menu bar, click *"Wizards -> New Project Directory..."*\
-    ![New project menu option](/emitterReceiverSchemeTutorial/images/newProjectMenuScreenshot.png)
+1. Open Webots and on the menu bar, click *"File -> New -> New Project Directory..."*\
+    ![New project menu option](/emitterReceiverSchemeTutorial/images/1_new_proj_menu.png)
 2. Select a directory of your choice
 3. On world settings **all** boxes should be ticked\
-    ![World settings](/emitterReceiverSchemeTutorial/images/worldSettingsScreenshot.png)
-4. Give your world a name, e.g. "cartPoleWorld.wbt"
+    ![World settings](/emitterReceiverSchemeTutorial/images/2_world_settings.png)
+4. Give your world a name, e.g. "cartpole_world.wbt"
 5. Press Finish
 
 You should end up with:\
-![Project created](/emitterReceiverSchemeTutorial/images/projectCreatedScreenshot.png)
+![Project created](/emitterReceiverSchemeTutorial/images/3_project_created.png)
 
 
 ### Adding a *robot node* and a *supervisor robot* node in the world
 
 First of all we will download the *CartPole robot node* definition that is supplied for the purposes of the tutorial, 
-we will later import it into the world.
+we will later add it into the world.
  
 1. Right-click on
-[this link](https://github.com/aidudezzz/deepbots-tutorials/blob/master/emitterReceiverSchemeTutorial/full_project/controllers/supervisorController/CartPoleRobot.wbo) 
+[this link](https://github.com/aidudezzz/deepbots-tutorials/blob/master/emitterReceiverSchemeTutorial/full_project/controllers/supervisorController/cartpole_robot_definition.txt) 
 and click *Save link as...* to download the CartPole robot definition 
-2. Save the .wbo file in a directory of your choice, where you can easily find it later.
+2. Save the .txt file in a directory of your choice
+3. Navigate to the directory and open the downloaded file with a text editor
+4. Select everything and copy it
 
-Now we need to import the *CartPole robot* into the world:
+Now we need to add the *CartPole robot* into the world:
 
-(Make sure the simulation is stopped and reset to its original state, by pressing the pause button and then the reset button)
-
-1. Click on the *Add a new object or import an object* button\
-![Add new object button](/emitterReceiverSchemeTutorial/images/addNewObjectButtonScreenshot.png)
-2. Click on *Import...* on the bottom right of the window\
-![Add Robot node](/emitterReceiverSchemeTutorial/images/importRobotNodeScreenshot.png)
-3. Locate the .wbo file downloaded earlier, select it and click *Open*
-4. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node, as well as in the world
-5. Click *Save*\
-![Click save button](/emitterReceiverSchemeTutorial/images/clickSaveButtonScreenshot.png)
+1. Navigate to your project's directory, open `/worlds` and edit the `.wbt` world file with a text editor
+2. Navigate to the end of the file and paste the contents of the `cartpole_robot_definition.txt` file we downloaded earlier
+3. Now all you need to do is reload the world and the robot will appear in it!
+![Reload button](/emitterReceiverSchemeTutorial/images/4_reload_world.png)
 
 The *CartPole robot node* comes ready along with the communication devices needed (an emitter and a receiver) to send and receive data.
-We will later add a *robot contoller* script to control the robot.
+Ignore the warning that appears in the console as we will later add a *robot controller* script to control the robot.
 
-Now that the *CartPole robot node* is imported, we are going to create another special kind of *robot*, called
+Now that the *CartPole robot node* is added, we are going to create another special kind of *robot*, called
 a *supervisor*. Later, we will add the *supervisor controller* script, through which we will be able to handle several 
-aspects of the simulation needed for RL (e.g. resetting). 
- 
+aspects of the simulation.
+
+_(Make sure the simulation is stopped and reset to its original state, by pressing the pause button and then the reset button)_
+
 1. Click on the *Add a new object or import an object* button\
-![Add new object button](/emitterReceiverSchemeTutorial/images/addNewObjectButtonScreenshot.png)
-(If the previously imported node is expanded, collapse it and click on it so the *add* button becomes active again.)
-2. Click on *Base nodes -> Robot*\
-![Add Robot node](/emitterReceiverSchemeTutorial/images/addRobotNodeScreenshot.png)
-3. Click *Add*. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node
-4. Click on the *Robot* node and set its DEF  field below to "supervisor"
-5. Double click on the *Robot* node to expand it
+![Add new object button](/emitterReceiverSchemeTutorial/images/5_add_new_object.png)
+(If button is grayed out, left-click on the last node on the tree (the robot node) so the *add* button becomes active again.)
+2. Expand the *Base nodes* and left-click on *Robot*\
+![Add Robot node](/emitterReceiverSchemeTutorial/images/6_add_robot_node.png)
+3. Click *Add*. Now on the left side of the screen, under the previously added *Robot* node, you can see a new *Robot* node
+4. Click on the new *Robot* node and set its DEF  field below to "SUPERVISOR"
+5. Double-click on the new *Robot* node to expand it
 6. Scroll down to find the *supervisor* field and set it to TRUE\
-![Set supervisor to TRUE](/emitterReceiverSchemeTutorial/images/setSupervisorTrueScreenshot.png)
+![Set supervisor to TRUE](/emitterReceiverSchemeTutorial/images/7_set_supervisor_true.png)
 7. On the *children* field, right-click and select *Add new*
 8. Expand the *Base nodes* and find *Emitter*
 9. Select it and on the lower right press *Add*
 10. Repeat from step 7, but this time add the *Receiver* node
 11. Click *Save*\
-![Click save button](/emitterReceiverSchemeTutorial/images/clickSaveButtonScreenshot.png)
+![Click save button](/emitterReceiverSchemeTutorial/images/8_click_save_button.png)
 
 # TODO Update below this line
 
@@ -339,7 +342,7 @@ This method also uses the `simulationResetPhysics()` supervisor method to reset 
         # Respawn robot in starting position and state
         rootNode = self.supervisor.getRoot()  # This gets the root of the scene tree
         childrenField = rootNode.getField('children')  # This gets a list of all the children, ie. objects of the scene
-        childrenField.importMFNode(-2, "CartPoleRobot.wbo")  # Load robot from file and add to second-to-last position
+        childrenField.importMFNode(-2, "CartPoleRobot.txt")  # Load robot from file and add to second-to-last position
 
         # Get the new robot and pole endpoint references
         self.robot = self.supervisor.getFromDef("ROBOT")
