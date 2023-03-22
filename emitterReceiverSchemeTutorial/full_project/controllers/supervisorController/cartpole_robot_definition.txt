@@ -1,4 +1,3 @@
-#VRML_OBJ R2022a utf8
 DEF ROBOT Robot {
   translation 0 0 0.04
   rotation 1 0 0 1.5708
