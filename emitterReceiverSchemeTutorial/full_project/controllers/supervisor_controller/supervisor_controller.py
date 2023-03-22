@@ -1,6 +1,6 @@
 import numpy as np
 from deepbots.supervisor.controllers.csv_supervisor_env import CSVSupervisorEnv
-from PPOAgent import PPOAgent, Transition
+from PPO_agent import PPOAgent, Transition
 from utilities import normalize_to_range
 
 
@@ -52,7 +52,7 @@ class CartPoleSupervisor(CSVSupervisorEnv):
         else:
             # method is called before self.message_received is initialized
             pole_angle = 0.0
-        if abs(pole_angle) > 0.261799388:  # more than 15 degrees off vertical
+        if abs(pole_angle) > 0.261799388:  # more than 15 degrees off vertical (defined in radians)
             return True
 
         if self.episode_score > 195.0:
@@ -77,45 +77,48 @@ class CartPoleSupervisor(CSVSupervisorEnv):
         pass
 
 
-supervisor = CartPoleSupervisor()
-agent = PPOAgent(supervisor.observation_space, supervisor.action_space)
+env = CartPoleSupervisor()
+agent = PPOAgent(env.observation_space, env.action_space)
 
 solved = False
 # Run outer loop until the episodes limit is reached or the task is solved
-while not solved and supervisor.episode_count < supervisor.episode_limit:
-    observation = supervisor.reset()  # Reset robot and get starting observation
-    supervisor.episode_score = 0
+while not solved and env.episode_count < env.episode_limit:
+    observation = env.reset()  # Reset robot and get starting observation
+    env.episode_score = 0
 
-    for step in range(supervisor.steps_per_episode):
+    for step in range(env.steps_per_episode):
         # In training mode the agent samples from the probability distribution, naturally implementing exploration
-        selectedAction, actionProb = agent.work(observation, type_="selectAction")
-        # Step the supervisor to get the current selectedAction's reward, the new observation and whether we reached
+        selected_action, action_prob = agent.work(observation, type_="selectAction")
+        # Step the env to get the current selected_action's reward, the new observation and whether we reached
         # the done condition
-        newObservation, reward, done, info = supervisor.step([selectedAction])
+        new_observation, reward, done, info = env.step([selected_action])
 
         # Save the current state transition in agent's memory
-        trans = Transition(observation, selectedAction, actionProb, reward, newObservation)
+        trans = Transition(observation, selected_action, action_prob, reward, new_observation)
         agent.store_transition(trans)
 
         if done:
             # Save the episode's score
-            supervisor.episode_score_list.append(supervisor.episode_score)
+            env.episode_score_list.append(env.episode_score)
             agent.train_step(batch_size=step + 1)
-            solved = supervisor.solved()  # Check whether the task is solved
+            solved = env.solved()  # Check whether the task is solved
             break
 
-        supervisor.episode_score += reward  # Accumulate episode reward
-        observation = newObservation  # observation for next step is current step's newObservation
+        env.episode_score += reward  # Accumulate episode reward
+        observation = new_observation  # observation for next step is current step's new_observation
 
-    print("Episode #", supervisor.episode_count, "score:", supervisor.episode_score)
-    supervisor.episode_count += 1  # Increment episode counter
+    print("Episode #", env.episode_count, "score:", env.episode_score)
+    env.episode_count += 1  # Increment episode counter
 
 if not solved:
     print("Task is not solved, deploying agent for testing...")
 elif solved:
     print("Task is solved, deploying agent for testing...")
 
-observation = supervisor.reset()
+observation = env.reset()
+env.episode_score = 0.0
 while True:
-    selectedAction, actionProb = agent.work(observation, type_="selectActionMax")
-    observation, _, _, _ = supervisor.step([selectedAction])
+    selected_action, action_prob = agent.work(observation, type_="selectActionMax")
+    observation, _, done, _ = env.step([selected_action])
+    if done:
+        observation = env.reset()
