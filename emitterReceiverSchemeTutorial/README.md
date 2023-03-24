@@ -190,7 +190,7 @@ implement the two basic framework methods *create_message* and *use_message_data
 unpacks messages sent by the *supervisor* that contain the next action, and uses the data to move the *CartPoleRobot* 
 forward and backward by setting the motor's speeds.
 
-The only import we are going to need is the *RobotEmitterReceiverCSV* class.
+The only import we are going to need is the *CSVRobot* class.
 ```python
 from deepbots.robots.controllers.csv_robot import CSVRobot
 ```
@@ -453,8 +453,8 @@ solved = False
 Now we define the outer training loop which runs the number of episodes defined in the supervisor class
 and resets the world to get the starting observation. We also reset the episode score to zero.
 
-(please be mindful of the indentation on the following code, because we are about to define several levels of nested
-loops and ifs)
+_(please be mindful of the indentation on the following code, because we are about to define several levels of nested
+loops and ifs)_
 ```python
 # Run outer loop until the episodes limit is reached or the task is solved
 while not solved and env.episode_count < env.episode_limit:
@@ -466,7 +466,7 @@ Inside the outer loop defined above we define the inner loop which runs for the 
 runs for a maximum number of steps defined by the problem. Here, the RL agent - environment loop takes place.
 
 We start by calling the `agent.work()` method, by providing it with the current observation, which for the first step
-is the zero vector returned by the `reset()` method, though the `get_default_observation()` method we defined. 
+is the zero vector returned by the `reset()` method, through the `get_default_observation()` method we defined. 
 The `work()` method implements the forward pass of the agent's actor neural network, providing us with the next action. 
 As the comment suggests the PPO algorithm implements exploration by sampling the probability distribution the 
 agent outputs from its actor's softmax output layer.
@@ -498,7 +498,7 @@ similar procedure and have similar methods to do it.
 ```
 
 Finally, we check whether the episode is terminated and if it is, we save the episode score, run a training step
-for the agent giving the number of steps taken in the episode as batch size, check whether the problem is solved
+for the agent giving the number of steps taken in the episode as batch size, and check whether the problem is solved
 via the `solved()` method and break.
 
 If not, we add the step reward to the `episode_score` accumulator, save the `new_observation` as `observation` and loop 
@@ -534,8 +534,8 @@ With the outer loop complete, this completes the training procedure. Now all tha
 barebones, simpler version of the training loop. First we print a message on whether the task is solved or not (i.e. 
 reached the episode limit without satisfying the solved condition) and call the `reset()` method. Then, we create a 
 `while True` loop that runs the agent's forward method, but this time selecting the action with the max probability
-out of the actor's softmax output, eliminating exploration. Finally, the `step()` method is called, but this time
-we keep only the observation it returns to keep the environment - agent loop running. If the *done* flag is true, we 
+out of the actor's softmax output, eliminating exploration/randomness. Finally, the `step()` method is called, but 
+this time we keep only the observation it returns to keep the environment - agent loop running. If the *done* flag is true, we 
 reset the environment to start over.
 
 ```python
@@ -560,13 +560,13 @@ Now with the coding done you can click on the *Run the simulation* button and wa
 ![Run the simulation](/emitterReceiverSchemeTutorial/images/14_click_play.png)\
 Webots allows to speed up the simulation, even run it without graphics, so the training shouldn't take long, at 
 least to see the agent becoming visibly better at moving under the pole to balance it. It takes a while for it to 
-achieve the *solved* condition, but when it does it becomes quite good at balancing the pole! You can even apply forces 
+achieve the *solved* condition, but when it does, it becomes quite good at balancing the pole! You can even apply forces 
 in real time by pressing Alt - left-click and drag on the robot or the pole.
 
 That's it for this tutorial! :)
 
 **_We welcome you to leave comments and feedback for the tutorial on the relevant 
-[discussions page](https://github.com/aidudezzz/deepbots-tutorials/discussions/15) or to open an issue for any 
+[discussions page](https://github.com/aidudezzz/deepbots-tutorials/discussions/15?sort=new) or to open an issue for any 
 problem you find in it!_**
 
 ![Solved cartpole demonstration](/emitterReceiverSchemeTutorial/images/cartPoleWorld.gif)
