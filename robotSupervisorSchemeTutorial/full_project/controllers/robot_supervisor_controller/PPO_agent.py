@@ -21,7 +21,7 @@ class PPOAgent:
     It uses the Actor and Critic neural network classes defined below.
     """
 
-    def __init__(self, numberOfInputs, numberOfActorOutputs, clip_param=0.2, max_grad_norm=0.5, ppo_update_iters=5,
+    def __init__(self, number_of_inputs, number_of_actor_outputs, clip_param=0.2, max_grad_norm=0.5, ppo_update_iters=5,
                  batch_size=8, gamma=0.99, use_cuda=False, actor_lr=0.001, critic_lr=0.003, seed=None):
         super().__init__()
         if seed is not None:
@@ -36,8 +36,8 @@ class PPOAgent:
         self.use_cuda = use_cuda
 
         # models
-        self.actor_net = Actor(numberOfInputs, numberOfActorOutputs)
-        self.critic_net = Critic(numberOfInputs)
+        self.actor_net = Actor(number_of_inputs, number_of_actor_outputs)
+        self.critic_net = Critic(number_of_inputs)
 
         if self.use_cuda:
             self.actor_net.cuda()
@@ -50,30 +50,45 @@ class PPOAgent:
         # Training stats
         self.buffer = []
 
-    def work(self, agentInput, type_="selectAction"):
+    def work(self, agent_input, type_="simple"):
         """
-        Forward pass of the PPO agent. Depending on the type_ argument, it either explores by sampling its actor's
-        softmax output, or eliminates exploring by selecting the action with the maximum probability (argmax).
-
-        :param agentInput: The actor neural network input vector
-        :type agentInput: vector
-        :param type_: "selectAction" or "selectActionMax", defaults to "selectAction"
-        :type type_: str, optional
+        type_ == "simple"
+            Implementation for a simple forward pass.
+        type_ == "selectAction"
+            Implementation for the forward pass, that returns a selected action according to the probability
+            distribution and its probability.
+        type_ == "selectActionMax"
+            Implementation for the forward pass, that returns the max selected action.
         """
-        agentInput = from_numpy(np.array(agentInput)).float().unsqueeze(0)  # Add batch dimension with unsqueeze
-
+        agent_input = from_numpy(np.array(agent_input)).float().unsqueeze(0)  # Add batch dimension with unsqueeze
         if self.use_cuda:
-            agentInput = agentInput.cuda()
-
+            agent_input = agent_input.cuda()
         with no_grad():
-            action_prob = self.actor_net(agentInput)
+            action_prob = self.actor_net(agent_input)
 
-        if type_ == "selectAction":
+        if type_ == "simple":
+            output = [action_prob[0][i].data.tolist() for i in range(len(action_prob[0]))]
+            return output
+        elif type_ == "selectAction":
             c = Categorical(action_prob)
             action = c.sample()
             return action.item(), action_prob[:, action.item()].item()
         elif type_ == "selectActionMax":
             return np.argmax(action_prob).item(), 1.0
+        else:
+            raise Exception("Wrong type in agent.work(), returning input")
+
+    def get_value(self, state):
+        """
+        Gets the value of the current state according to the critic model.
+
+        :param state: The current state
+        :return: state's value
+        """
+        state = from_numpy(state)
+        with no_grad():
+            value = self.critic_net(state)
+        return value.item()
 
     def save(self, path):
         """
@@ -97,7 +112,7 @@ class PPOAgent:
         self.actor_net.load_state_dict(actor_state_dict)
         self.critic_net.load_state_dict(critic_state_dict)
 
-    def storeTransition(self, transition):
+    def store_transition(self, transition):
         """
         Stores a transition in the buffer to be used later.
 
@@ -106,19 +121,20 @@ class PPOAgent:
         """
         self.buffer.append(transition)
 
-    def trainStep(self, batchSize=None):
+    def train_step(self, batch_size=None):
         """
-        Performs a training step for the actor and critic models, based on transitions gathered in the
+        Performs a training step or update for the actor and critic models, based on transitions gathered in the
         buffer. It then resets the buffer.
+        If provided with a batch_size, this is used instead of default self.batch_size
 
-        :param batchSize: Overrides agent set batch size, defaults to None
-        :type batchSize: int, optional
+        :param: batch_size: int
+        :return: None
         """
         # Default behaviour waits for buffer to collect at least one batch_size of transitions
-        if batchSize is None:
+        if batch_size is None:
             if len(self.buffer) < self.batch_size:
                 return
-            batchSize = self.batch_size
+            batch_size = self.batch_size
 
         # Extract states, actions, rewards and action probabilities from transitions in buffer
         state = tensor([t.state for t in self.buffer], dtype=torch_float)
@@ -140,9 +156,9 @@ class PPOAgent:
             Gt = Gt.cuda()
 
         # Repeat the update procedure for ppo_update_iters
-        for i in range(self.ppo_update_iters):
-            # Create randomly ordered batches of size batchSize from buffer
-            for index in BatchSampler(SubsetRandomSampler(range(len(self.buffer))), batchSize, False):
+        for _ in range(self.ppo_update_iters):
+            # Create randomly ordered batches of size batch_size from buffer
+            for index in BatchSampler(SubsetRandomSampler(range(len(self.buffer))), batch_size, False):
                 # Calculate the advantage at each step
                 Gt_index = Gt[index].view(-1, 1)
                 V = self.critic_net(state[index])
@@ -177,11 +193,11 @@ class PPOAgent:
 
 
 class Actor(nn.Module):
-    def __init__(self, numberOfInputs, numberOfOutputs):
+    def __init__(self, number_of_inputs, number_of_outputs):
         super(Actor, self).__init__()
-        self.fc1 = nn.Linear(numberOfInputs, 10)
+        self.fc1 = nn.Linear(number_of_inputs, 10)
         self.fc2 = nn.Linear(10, 10)
-        self.action_head = nn.Linear(10, numberOfOutputs)
+        self.action_head = nn.Linear(10, number_of_outputs)
 
     def forward(self, x):
         x = F.relu(self.fc1(x))
@@ -191,9 +207,9 @@ class Actor(nn.Module):
 
 
 class Critic(nn.Module):
-    def __init__(self, numberOfInputs):
+    def __init__(self, number_of_inputs):
         super(Critic, self).__init__()
-        self.fc1 = nn.Linear(numberOfInputs, 10)
+        self.fc1 = nn.Linear(number_of_inputs, 10)
         self.fc2 = nn.Linear(10, 10)
         self.state_value = nn.Linear(10, 1)
 
