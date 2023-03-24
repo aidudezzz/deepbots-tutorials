@@ -20,7 +20,7 @@ This tutorial uses the [robot-supervisor scheme](https://github.com/aidudezzz/de
 [emitter-receiver scheme](https://github.com/aidudezzz/deepbots#emitter---receiver-scheme) 
 which is useful for setting up more 
 complicated examples, such as having a single RL agent controlling multiple robots. This scheme separates the robot and 
-the RL agent in different Webots nodes. This example also includes a custom implementation of the reset procedure.
+the RL agent in different Webots nodes.
 
 ## Contributors ✨
 

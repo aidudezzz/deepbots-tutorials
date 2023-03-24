@@ -2,47 +2,41 @@
 
 ![Solved cartpole demonstration](/robotSupervisorSchemeTutorial/images/cartPoleWorld.gif)
 
-This tutorial shows the creation of the [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem using the updated
-version of the [*deepbots framework*](https://github.com/aidudezzz/deepbots), utilizing the 
-[robot-supervisor scheme](https://github.com/aidudezzz/deepbots#combined-robot-supervisor-scheme) which combines the
-gym environment and the robot controller in one script, forgoing the emitter and receiver communication.
-
-The first parts of the tutorial are identical to the 
-[original CartPole tutorial](https://github.com/aidudezzz/deepbots-tutorials/tree/master/cartPoleTutorial) that uses the 
-[emitter-receiver scheme](https://github.com/aidudezzz/deepbots#emitter---receiver-scheme), so one can follow either
-one, depending on their use-case. Mainly, if you desire to set up a more complicated example that might use multiple
-robots or similar, refer to the emitter-receiver tutorial to get started.
+This tutorial explains how to use the [*deepbots framework*](https://github.com/aidudezzz/deepbots) by setting 
+up a simple problem. We will use the 
+[robot-supervisor scheme](https://github.com/aidudezzz/deepbots#combined-robot-supervisor-scheme) 
+which combines the gym environment and the robot controller in one script, forgoing the emitter and receiver communication.
+ 
+This tutorial can get you started for use cases that use a single robot, which should cover most needs.
+If you desire to set up a more complicated example that might use multiple robots or similar, refer to the 
+[emitter-receiver tutorial](https://github.com/aidudezzz/deepbots-tutorials/tree/master/emitterReceiverSchemeTutorial) 
+to get started.
 
 Keep in mind that the tutorial is very detailed and many parts can be completed really fast by an 
 experienced user. The tutorial assumes no familiarity with the [Webots](https://cyberbotics.com/) simulator.
 
-We will recreate the [CartPole](https://gym.openai.com/envs/CartPole-v0/) problem step-by-step in 
+We will recreate the [CartPole](https://www.gymlibrary.dev/environments/classic_control/cart_pole/) problem step-by-step in 
 [Webots](https://cyberbotics.com/), and solve it with the 
 [Proximal Policy Optimization](https://openai.com/blog/openai-baselines-ppo/) (PPO) 
 Reinforcement Learning (RL) algorithm, using [PyTorch](https://pytorch.org/) as our neural network backend library.
 
-We will focus on creating the project, the world and the controller script and how to use the *deepbots framework*.
-For the purposes of the tutorial, a basic implementation of the PPO algorithm is provided. For guides on how to 
-construct a custom robot, please visit the official Webots 
+We will focus on creating the project, the world and the controller scripts and how to use the *deepbots framework*.
+For the purposes of the tutorial, a basic implementation of the PPO algorithm, together with a custom CartPole robot 
+node contained within the world are supplied. For guides on how to construct a custom robot, please visit the official Webots 
 [tutorial](https://cyberbotics.com/doc/guide/tutorial-6-4-wheels-robot). 
 
 You can check the complete example [here](/robotSupervisorSchemeTutorial/full_project) with all the scripts and nodes 
 used in this tutorial.
-The CartPole example is available on the [deepworlds](https://github.com/aidudezzz/deepworlds/) repository.
-
+The CartPole example is available (with some added code for plots/monitoring and keyboard controls) on the 
+[deepworlds](https://github.com/aidudezzz/deepworlds/) repository.
 
 ## Prerequisites
-
-_Please note that this tutorial targets the newest deepbots release (0.1.3) which is currently in development,
-you can install the dev version with this command:_
-
-_`pip install -i https://test.pypi.org/simple/ deepbots`_
 
 Before starting, several prerequisites should be met. Follow the [installation section on the deepbots framework main 
 repository](https://github.com/aidudezzz/deepbots#installation).
 
 For this tutorial you will also need to [install PyTorch](https://pytorch.org/get-started/locally/) 
-(no CUDA/GPU support needed for this tutorial).
+(no CUDA/GPU support needed for this simple example as the very small neural networks used are sufficient to solve the task).
 
 
 ## CartPole
@@ -50,44 +44,54 @@ For this tutorial you will also need to [install PyTorch](https://pytorch.org/ge
 
 Now we are ready to start working on the *CartPole* problem. First of all, we should create a new project.
 
-1. Open Webots and on the menu bar, click *"Wizards -> New Project Directory..."*\
-    ![New project menu option](/robotSupervisorSchemeTutorial/images/newProjectMenuScreenshot.png)
+1. Open Webots and on the menu bar, click *"File -> New -> New Project Directory..."*\
+    ![New project menu option](/emitterReceiverSchemeTutorial/images/1_new_proj_menu.png)
 2. Select a directory of your choice
 3. On world settings **all** boxes should be ticked\
-    ![World settings](/robotSupervisorSchemeTutorial/images/worldSettingsScreenshot.png)
-4. Give your world a name, e.g. "cartPoleWorld.wbt"
+    ![World settings](/emitterReceiverSchemeTutorial/images/2_world_settings.png)
+4. Give your world a name, e.g. "cartpole_world.wbt"
 5. Press Finish
 
 You should end up with:\
-![Project created](/robotSupervisorSchemeTutorial/images/projectCreatedScreenshot.png)
+![Project created](/emitterReceiverSchemeTutorial/images/3_project_created.png)
 
 
 ### Adding a *supervisor robot* node in the world
 
-First of all we will download the *CartPole robot node* definition that is supplied for the purposes of the tutorial.
+First of all we will download the *CartPole robot node* definition that is supplied for the purposes of the tutorial, 
+we will later add it into the world.
  
 1. Right-click on
-[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/CartPoleRobot.wbo) 
+[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/cartpole_robot_definition.txt) 
 and click *Save link as...* to download the CartPole robot definition 
-2. Save the .wbo file in a directory of your choice, where you can easily find it later.
+2. Save the .txt file in a directory of your choice
+3. Navigate to the directory and open the downloaded file with a text editor
+4. Select everything and copy it
 
-Now that the project and the starting world are created, we are going to create our *robot*, that also has *supervisor*
-privileges. Later, we will add the *controller* script, through which we will be able to handle several 
-aspects of the simulation needed for RL, but also control the robot with the actions produced by the 
-RL agent.
+Now we need to add the *CartPole robot* into the world:
 
-(Make sure the simulation is stopped and reset to its original state, by pressing the pause button and then the reset button)
-1. Click on the *Add a new object or import an object* button\
-![Add new object button](/robotSupervisorSchemeTutorial/images/addNewObjectButtonScreenshot.png)
-2. Click on *Import...* on the bottom right of the window\
-![Add Robot node](/robotSupervisorSchemeTutorial/images/importRobotNodeScreenshot.png)
-3. Locate the .wbo file downloaded earlier, select it and click *Open*
-4. Now on the left side of the screen, under the *Rectangle Arena* node, you can see the *Robot* node
-5. Double click on the *Robot* node to expand it
-6. Scroll down to find the *supervisor* field and set it to TRUE\
-![Set supervisor to TRUE](/robotSupervisorSchemeTutorial/images/setSupervisorTrueScreenshot.png)
-7. Click *Save*\
-![Click save button](/robotSupervisorSchemeTutorial/images/clickSaveButtonScreenshot.png)
+1. Navigate to your project's directory, open `/worlds` and edit the `.wbt` world file with a text editor
+2. Navigate to the end of the file and paste the contents of the `cartpole_robot_definition.txt` file we downloaded earlier
+3. Now all you need to do is reload the world and the robot will appear in it!
+![Reload button](/robotSupervisorSchemeTutorial/images/4_reload_world.png)
+
+Ignore the warning that appears in the console as we will later add a *robot controller* script to control the robot.
+
+Now that the project and the starting world are created and the robot added to the world, we need to also give *supervisor*
+privileges to the robot, so it can get various values from the simulation and also control it.
+This will be done through the *robot controller* script which we will add later. Through this script we will be able to 
+handle several aspects of the simulation needed for RL, but also control the robot with the actions produced by the RL agent.
+
+Now let's go ahead and give the *supervisor* privileges to the robot:
+
+_(Make sure the simulation is stopped and reset to its original state, by pressing the pause button and then the reset button)_
+
+1. Double-click on the new *Robot* node to expand it
+2. Scroll down to find the *supervisor* field and set it to TRUE\
+![Set supervisor to TRUE](/robotSupervisorSchemeTutorial/images/5_set_supervisor_true.png)
+3. Click *Save*\
+![Click save button](/robotSupervisorSchemeTutorial/images/6_click_save_button.png)\
+*If the save button is grayed out, move the camera a bit in the 3D view and it should be enabled*
 
 
 ### Adding the controllers
@@ -95,27 +99,27 @@ RL agent.
 Now we will create the controller script needed that contains the environment and the robot controls.
 Then we are going to assign the *robot controller* script to the *robot* node created before.
 
-Creating the *robotSupervisorController* script:
-1. On the *menu bar*, click *"Wizards -> New Robot Controller..."*\
-![New robot controller](/robotSupervisorSchemeTutorial/images/newControllerMenuScreenshot.png)
+Creating the *robot supervisor controller* script:
+1. On the *menu bar*, click *"File -> New -> New Robot Controller..."*\
+![New robot controller](/robotSupervisorSchemeTutorial/images/7_new_controller_menu.png)
 2. On *Language selection*, select *Python*
-3. Give it the name "*robotSupervisorController*"
+3. Give it the name "*robot_supervisor_controller*"
 4. Press *Finish* 
 
 *If you are using an external IDE:    
 1. Un-tick the "open ... in Text Editor" boxes and press *Finish*
-2. Navigate to the project directory, inside the *controllers/robotSupervisorController/* directory
+2. Navigate to the project directory, inside the *controllers/controllerName/* directory
 3. Open the controller script with your IDE
 
 The new Python controller script should be created and opened in Webots text editor looking like this:\
-![New robot controller](/robotSupervisorSchemeTutorial/images/newControllerCreated.png)
+![New robot controller](/robotSupervisorSchemeTutorial/images/8_new_controllers_created.png)
 
 Assigning the *robotSupervisorController* to the *robot* node *controller* field:
-1. Expand the *robot* node created earlier and scroll down to find the *controller* field
+1. Expand the *robot* node and scroll down to find the *controller* field
 2. Click on the *controller* field and press the "*Select...*" button below\
-![New robot controller](/robotSupervisorSchemeTutorial/images/assignSupervisorController1Screenshot.png)
-3. Find the "*robotSupervisorController*" controller from the list and click it\
-![New robot controller](/robotSupervisorSchemeTutorial/images/assignSupervisorController2Screenshot.png)
+![New robot controller](/robotSupervisorSchemeTutorial/images/9_assign_supervisor_controller_1.png)
+3. Find the "*robot supervisor controller*" controller from the list and click it\
+![New robot controller](/robotSupervisorSchemeTutorial/images/10_assign_supervisor_controller_2.png)
 4. Click *OK*
 5. Click *Save*
 
@@ -125,50 +129,52 @@ Before delving into writing code, we take a look at the general workflow of the 
 that inherits a *deepbots framework* class and write implementations for several key methods, specific for the 
 *CartPole* problem.
 
-We will be implementing the basic methods *get_observations*, *get_reward*, *is_done* and *reset*, used for RL based 
-on the [OpenAI Gym](https://gym.openai.com/) framework logic, that will be contained in the *robotSupervisorController*. 
-These methods will compose the *environment* for the RL algorithm. The *robotSupervisorController* will also contain the 
-RL *agent*, that will receive *observations* and output *actions*.
+We will be implementing the basic methods *get_observations*, *get_default_observation*, *get_reward*, *is_done* and *solved*, 
+used for RL, based on the [Gym](https://www.gymlibrary.dev/) framework logic, that will be contained in the 
+*robot supervisor controller*. 
+These methods will compose the *environment* for the RL algorithm. Within the *robot supervisor controller*, below the 
+environment class we will also add the RL *agent* that will receive *observations* and output *actions* and the 
+RL training loop.
 
-The *robot controller* will gather data from the *robot's* sensors and pack it to compose the *observation* for the 
-agent using the *get_observations* method that we will implement. Then, using the *observation* the *agent* will 
-perform a forward pass and return an *action*. Then the *robot controller* will use the *action* with the 
+The *robot supervisor controller* will also gather data from the *robot's* sensors and pack it to compose the *observation* 
+for the agent using the *get_observations* method that we will implement. Then, using the *observation* the *agent* will 
+perform a forward pass and return an *action*. Then the *robot supervisor controller* will use the *action* with the 
 *apply_action* method, which will perform the *action* on the *robot*. 
 This closes the loop that repeats until a termination condition is met, defined in the *is_done* method. 
 
 
 ### Writing the script
 
-Now we are ready to start writing the *robotSupervisorController* script.
-It is recommended to delete the contents of the script that were automatically created. 
+Now we are ready to start writing the *robot supervisor controller* script.
+It is recommended to delete the contents of the script that were automatically generated. 
 
-### RobotSupervisor controller script
+### Robot supervisor controller script
 
-In this script we will import the *RobotSupervisor* class from the *deepbots framework* and inherit it into our own 
-*CartPoleRobot* class. Then, we are going to implement the various basic framework methods:
+In this script we will import the *RobotSupervisorEnv* class from the *deepbots framework* and inherit it into our own 
+*CartpoleRobot* class. Then, we are going to implement the various basic framework methods:
 1. *get_observations* which will create the *observation* for our agent in each step
-2. *get_reward* which will return the reward for agent for each step
-3. *is_done* which will look for the episode done condition
-4. *solved* which will look for a condition that shows that the agent is fully trained and able to solve the problem 
+2. *get_default_observation* which is used by the *reset* method that the framework implements
+3. *get_reward* which will return the reward for agent for each step
+4. *is_done* which will look for the episode done condition
+5. *solved* which will look for a condition that shows that the agent is fully trained and able to solve the problem 
    adequately (note that this method is not required by the framework, we just add it for convenience)
-5. *get_default_observation* which is used by the *reset* method that the framework implements
 6. *apply_action* which will take the action provided by the agent and apply it to the robot by setting its 
    motors' speeds
-8. dummy implementations for *get_info* and *render* required by the *gym.Env* class that is inherited
+7. dummy implementations for *get_info* and *render* required to have a complete Gym environment
 
 Before we start coding, we should add two scripts, one that contains the RL PPO agent, 
 and the other containing utility functions that we are going to need.
 
-Save both files inside the project directory, under Controllers/robotSupervisorController/
-1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/PPO_agent.py) and click *Save link as...* to download the PPO agent
-2. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/utilities.py) and click *Save link as...* to download the utilities script
+Save both files inside the project directory, under controllers/robot_supervisor_controller/
+1. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robot_supervisor_controller/PPO_agent.py) and click *Save link as...* to download the PPO agent
+2. Right-click on [this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robot_supervisor_controller/utilities.py) and click *Save link as...* to download the utilities script
 
-Starting with the imports, first we are going to need the *RobotSupervisor* class and then
+Starting with the imports, first we are going to need the *RobotSupervisorEnv* class and then
 a couple of utility functions, the PPO agent implementation, the gym spaces to define the action and observation spaces
 and finally numpy, which is installed as a dependency of the libraries we already installed.
 ```python
-from deepbots.supervisor.controllers.robot_supervisor import RobotSupervisor
-from utilities import normalizeToRange, plotData
+from deepbots.supervisor.controllers.robot_supervisor_env import RobotSupervisorEnv
+from utilities import normalize_to_range
 from PPO_agent import PPOAgent, Transition
 
 from gym.spaces import Box, Discrete
@@ -176,7 +182,7 @@ import numpy as np
 ```
 Then we define our class, inheriting the imported one.
 ```python
-class CartpoleRobot(RobotSupervisor):
+class CartpoleRobot(RobotSupervisorEnv):
     def __init__(self):
         super().__init__()
 ```
@@ -205,47 +211,56 @@ We then get a reference to the robot node, initialize the pole sensor, get a ref
 initialize the wheel motors.
 ```python
         self.robot = self.getSelf()  # Grab the robot reference from the supervisor to access various robot methods
-        self.positionSensor = self.getDevice("polePosSensor")
-        self.positionSensor.enable(self.timestep)
+        self.position_sensor = self.getDevice("polePosSensor")
+        self.position_sensor.enable(self.timestep)
+        self.pole_endpoint = self.getFromDef("POLE_ENDPOINT")
 
-        self.poleEndpoint = self.getFromDef("POLE_ENDPOINT")
         self.wheels = []
-        for wheelName in ['wheel1', 'wheel2', 'wheel3', 'wheel4']:
-            wheel = self.getDevice(wheelName)  # Get the wheel handle
+        for wheel_name in ['wheel1', 'wheel2', 'wheel3', 'wheel4']:
+            wheel = self.getDevice(wheel_name)  # Get the wheel handle
             wheel.setPosition(float('inf'))  # Set starting position
             wheel.setVelocity(0.0)  # Zero out starting velocity
             self.wheels.append(wheel)
 ```
-Finally, we initialize several variables used during training. Note that the `self.stepsPerEpisode` is set to `200` 
+Finally, we initialize several variables used during training. Note that the `self.steps_per_episode` is set to `200` 
 based on the problem's definition. This concludes the `__init__()` method.
 ```python
-        self.stepsPerEpisode = 200  # Max number of steps per episode
-        self.episodeScore = 0  # Score accumulated during an episode
-        self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
-```        
+        self.steps_per_episode = 200  # Max number of steps per episode
+        self.episode_score = 0  # Score accumulated during an episode
+        self.episode_score_list = []  # A list to save all the episode scores, used to check if task is solved
+```
 
 After the initialization we start implementing the various methods needed. We start with the `get_observations()`
 method, which creates the agent's input from various information observed from the Webots world and returns it. We use
-the `normalizeToRange()` utility method to normalize the values into the `[-1.0, 1.0]` range.
+the `normalize_to_range()` utility method to normalize the values into the `[-1.0, 1.0]` range.
 
-We will start by getting the CartPole robot node position and velocity on the x axis. The x axis is the direction of 
+We will start by getting the cartpole robot nodes position and velocity on the x-axis. The x-axis is the direction of 
 its forward/backward movement. We then read the position sensor value that returns the angle off vertical of the pole.
-Finally, we get the pole tip velocity from the poleEndpoint node we defined earlier.
+Finally, we get the pole tip velocity from the poleEndpoint node we defined earlier. The values are packed in a list
+and returned.
 
 (mind the indentation, the following methods belong to the *CartpoleRobot* class)
 ```python
     def get_observations(self):
-        # Position on x axis
-        cartPosition = normalizeToRange(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
-        # Linear velocity on x axis
-        cartVelocity = normalizeToRange(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
+        # Position on x-axis
+        cart_position = normalize_to_range(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
+        # Linear velocity on x-axis
+        cart_velocity = normalize_to_range(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
         # Pole angle off vertical
-        poleAngle = normalizeToRange(self.positionSensor.getValue(), -0.23, 0.23, -1.0, 1.0, clip=True)
+        pole_angle = normalize_to_range(self.position_sensor.getValue(), -0.23, 0.23, -1.0, 1.0, clip=True)
         # Angular velocity y of endpoint
-        endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[4], -1.5, 1.5, -1.0, 1.0, clip=True)
+        endpoint_velocity = normalize_to_range(self.pole_endpoint.getVelocity()[4], -1.5, 1.5, -1.0, 1.0, clip=True)
 
-        return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
+        return [cart_position, cart_velocity, pole_angle, endpoint_velocity]
 ```
+
+Let's also define the *get_defaults_observation()* that is used internally by deepbots when a new training episode starts:
+```python
+    def get_default_observation(self):
+        # This method just returns a zero vector as a default observation
+        return [0.0 for _ in range(self.observation_space.shape[0])]
+```
+
 Now for something simpler, we will define the `get_reward()` method, which simply returns
 `1` for each step. Usually reward functions are more elaborate, but for this problem it is simply
 defined as the agent getting a +1 reward for each step it manages to keep the pole from falling.
@@ -257,20 +272,20 @@ defined as the agent getting a +1 reward for each step it manages to keep the po
 Moving on, we define the *is_done()* method, which contains the episode termination conditions:
 - Episode terminates if episode score is over 195
 - Episode terminates if the pole has fallen beyond an angle which can be realistically recovered (+-15 degrees)
-- Episode terminates if the robot hit the walls by moving into them, which is calculated based on its position on z axis
+- Episode terminates if the robot hit the walls by moving into them, which is calculated based on its position on x-axis
 ```python
     def is_done(self):
-        if self.episodeScore > 195.0:
+        if self.episode_score > 195.0:
             return True
 
-        poleAngle = round(self.positionSensor.getValue(), 2)
-        if abs(poleAngle) > 0.261799388:  # 15 degrees off vertical
+        pole_angle = round(self.position_sensor.getValue(), 2)
+        if abs(pole_angle) > 0.261799388:  # more than 15 degrees off vertical (defined in radians)
             return True
 
-        cartPosition = round(self.robot.getPosition()[2], 2)  # Position on z axis
-        if abs(cartPosition) > 0.39:
+        cart_position = round(self.robot.getPosition()[0], 2)  # Position on x-axis
+        if abs(cart_position) > 0.39:
             return True
-        
+
         return False
 ```
 We separate the *solved* condition into another method, the `solved()` method, because it requires different handling.
@@ -278,147 +293,156 @@ The *solved* condition depends on the agent completing consecutive episodes succ
 by taking the average episode score of the last 100 episodes and checking if it's over 195.
 ```python
     def solved(self):
-        if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
-            if np.mean(self.episodeScoreList[-100:]) > 195.0:  # Last 100 episodes' scores average value
+        if len(self.episode_score_list) > 100:  # Over 100 trials thus far
+            if np.mean(self.episode_score_list[-100:]) > 195.0:  # Last 100 episodes' scores average value
                 return True
         return False
 ```
-For this tutorial we use the default implementation of reset, which simply requires us to return a starting observation.
-We do this in the `get_default_observation()` method which simply returns a zero vector.
+
+To complete the Gym environment, we add dummy implementations of `get_info()` and `render()` methods, 
+because in this example they are not actually used, but are required by the framework and gym in the background.
+
 ```python
-    def get_default_observation(self):
-        return [0.0 for _ in range(self.observation_space.shape[0])]
+    def get_info(self):
+        return None
+
+    def render(self, mode='human'):
+        pass
 ```
-We will now define the `apply_action()` method which gets the action that the agent outputs and turns it into physical
-motion of the robot. For this tutorial we use a discrete action space, and thus the agent outputs an integer that is
-either `0` or `1` denoting forward or backward motion using the robot's motors.
+
+Lastly, this controller actually controls the robot itself, so we need to define the `apply_action()` method which gets the 
+action that the agent outputs and turns it into physical motion of the robot. For this tutorial we use a discrete action space, 
+and thus the agent outputs an integer that is either `0` or `1` denoting forward or backward motion using the robot's motors.
 ```python
     def apply_action(self, action):
         action = int(action[0])
 
         if action == 0:
-            motorSpeed = 5.0
+            motor_speed = 5.0
         else:
-            motorSpeed = -5.0
+            motor_speed = -5.0
 
         for i in range(len(self.wheels)):
             self.wheels[i].setPosition(float('inf'))
-            self.wheels[i].setVelocity(motorSpeed)
+            self.wheels[i].setVelocity(motor_speed)
 ```
-
-Lastly, we add dummy implementations of `get_info()` and `render()` methods, because in this example they are not 
-actually used, but are required by the framework and gym in the background.
-
-```python
-    def render(self, mode='human'):
-        print("render() is not used")
-
-    def get_info(self):
-        return None
-```
-That's the *CartpoleRobot* class complete. Now all that's left, is to add (outside the class scope, mind the 
-indentation) the code that runs the RL loop.
+That's the *CartpoleRobot* class complete that now contains all required methods to run an RL training loop and also get 
+information from the simulation and the robot sensors, but also control the robot! 
+Now all that's left, is to add (outside the class scope, mind the indentation) the code that runs the RL loop.
 
 ### RL Training Loop
 
 Finally, it all comes together inside the RL training loop. Now we initialize the RL agent and create the 
-*CartPoleRobot* class object with which it gets trained to solve the problem, maximizing the reward received
-by our reward function and achieve the solved condition defined.
+*CartPoleSupervisor* class object, i.e. the RL environment, with which the agent gets trained to solve the problem, 
+maximizing the reward received by our reward function and achieve the solved condition defined.
 
-First we initialize a supervisor object and then initialize the PPO agent, providing it with the observation and action
-spaces. Note that we extract the number 4 as numberOfInputs and number 2 as numberOfActorOutputs from the gym spaces,
+**Note that popular frameworks like [stable-baselines3](https://stable-baselines3.readthedocs.io/en/master/) contain the 
+RL training loop within their *learn* method or similar. Frameworks like *sb3* are fully compatible with *deepbots*, as 
+*deepbots* defines Gym environments and interfaces them with Webots saving you a lot of trouble, which then can be 
+supplied to frameworks like *sb3* or any other RL framework of your choice.**
+
+For this tutorial we follow a more hands-on approach to get a better grasp of how RL works. Also feel free to check out 
+the simple PPO agent implementation we provide. 
+
+First we create a supervisor object and then initialize the PPO agent, providing it with the observation and action
+spaces. Note that we extract the number 4 as _number_of_inputs_ and number 2 as _number_of_actor_outputs_ from the gym spaces,
 because the algorithm implementation expects integers for these arguments to initialize the neural network's input and
 output neurons.
 
 ```python
 env = CartpoleRobot()
-agent = PPOAgent(numberOfInputs=env.observation_space.shape[0], numberOfActorOutputs=env.action_space.n)
+agent = PPOAgent(number_of_inputs=env.observation_space.shape[0], number_of_actor_outputs=env.action_space.n)
 ```
 
-Then we set the `solved` flag to `false`. This flag is used to terminate the training loop and signifies whether 
-the solved condition is met.
+Then we set the `solved` flag to `false`. This flag is used to terminate the training loop when the solved condition is met.
 ```python
 solved = False
 ```
 Before setting up the RL loop, we define an episode counter and a limit for the number of episodes to run.
 ```python
-episodeCount = 0
-episodeLimit = 2000
+episode_count = 0
+episode_limit = 2000
 ```
 Now we define the outer loop which runs the number of episodes we just defined and resets the world to get the 
 starting observation. We also reset the episode score to zero.
 
-(please be mindful of the indentation on the following code, because we are about to define several levels of nested
-loops and ifs)
+_(please be mindful of the indentation on the following code, because we are about to define several levels of nested
+loops and ifs)_
 ```python
 # Run outer loop until the episodes limit is reached or the task is solved
-while not solved and episodeCount < episodeLimit:
+while not solved and episode_count < episode_limit:
     observation = env.reset()  # Reset robot and get starting observation
-    env.episodeScore = 0
+    env.episode_score = 0
 ```
 
 Inside the outer loop defined above we define the inner loop which runs for the course of an episode. This loop
 runs for a maximum number of steps defined by the problem. Here, the RL agent - environment loop takes place.
 
 We start by calling the `agent.work()` method, by providing it with the current observation, which for the first step
-is the zero vector returned by the `reset()` method. The `reset()` method actually uses the `get_default_observation()`
-method we defined earlier. The `work()` method implements the forward pass of the agent's 
-actor neural network, providing us with the next action. As the comment suggests the PPO algorithm implements 
-exploration by sampling the probability distribution the agent outputs from its actor's softmax output layer.
+is the zero vector returned by the `reset()` method, through the `get_default_observation()` method we defined. 
+The `reset()` method actually uses the `get_default_observation()` method we defined earlier. 
+The `work()` method implements the forward pass of the agent's actor neural network, providing us with the next action. 
+As the comment suggests the PPO algorithm implements exploration by sampling the probability distribution the agent 
+outputs from its actor's softmax output layer.
 
 ```python
-    for step in range(env.stepsPerEpisode):
+    for step in range(env.steps_per_episode):
         # In training mode the agent samples from the probability distribution, naturally implementing exploration
-        selectedAction, actionProb = agent.work(observation, type_="selectAction")
+        selected_action, action_prob = agent.work(observation, type_="selectAction")
 ``` 
 
-The next part contains the call to the `step()` method. This method calls most of the methods we implemented earlier 
-(`get_observation()`, `get_reward()`, `is_done()` and `get_info()`), steps the Webots controller and applies the action 
-that the agent selected on the robot with the `apply_action()` method we defined. 
-Step returns the new observation, the reward for the previous 
-action and whether the episode is terminated (info is not implemented in this example).
+The next part contains the call to the `step()` method which is defined internally in deepbots. This method calls most of 
+the methods we implemented earlier (`get_observation()`, `get_reward()`, `is_done()` and `get_info()`), steps the Webots 
+controller and applies the action that the agent selected on the robot with the `apply_action()` method we defined. 
+Step returns the new observation, the reward for the previous action and whether the episode is 
+terminated (info is not implemented in this example).
 
 Then, we create the `Transition`, which is a named tuple that contains, as the name suggests, the transition between
-the previous `observation` (/state) to the `newObservation` (/newState). This is needed by the agent for its training 
-procedure, so we call the agent's `storeTransition()` method to save it to the buffer. Most RL algorithms require a 
+the previous `observation` (or `state`) to the `new_observation` (or `new_state`). This is needed by the agent for its training 
+procedure, so we call the agent's `store_transition()` method to save it to its buffer. Most RL algorithms require a 
 similar procedure and have similar methods to do it.
 
 ```python
-        # Step the supervisor to get the current selectedAction's reward, the new observation and whether we reached 
+        # Step the supervisor to get the current selected_action's reward, the new observation and whether we reached
         # the done condition
-        newObservation, reward, done, info = env.step([selectedAction])
+        new_observation, reward, done, info = env.step([selected_action])
 
         # Save the current state transition in agent's memory
-        trans = Transition(observation, selectedAction, actionProb, reward, newObservation)
-        agent.storeTransition(trans)
+        trans = Transition(observation, selected_action, action_prob, reward, new_observation)
+        agent.store_transition(trans)
 ```
 
 Finally, we check whether the episode is terminated and if it is, we save the episode score, run a training step
-for the agent giving the number of steps taken in the episode as batch size, check whether the problem is solved
+for the agent giving the number of steps taken in the episode as batch size, and check whether the problem is solved
 via the `solved()` method and break.
 
-If not, we add the step reward to the `episodeScore` accumulator, save the `newObservation` as `observation` and loop 
+If not, we add the step reward to the `episode_score` accumulator, save the `new_observation` as `observation` and loop 
 onto the next episode step.
+
+**Note that in more realistic training procedures, the training step might not run for each episode. Depending on the problem
+you might need to run the training procedure multiple times per episode or once per multiple episodes. This is set as `n_steps` 
+or similar in frameworks like *sb3*. Moreover, changing the batch size along with `n_steps` might influence greatly the 
+training results and whether the agent actually converges to a solution, and consequently are crucial parameters.**
 
 ```python
         if done:
             # Save the episode's score
-            env.episodeScoreList.append(env.episodeScore)
-            agent.trainStep(batchSize=step)
+            env.episode_score_list.append(env.episode_score)
+            agent.train_step(batch_size=step + 1)
             solved = env.solved()  # Check whether the task is solved
             break
 
-        env.episodeScore += reward  # Accumulate episode reward
-        observation = newObservation  # observation for next step is current step's newObservation
+        env.episode_score += reward  # Accumulate episode reward
+        observation = new_observation  # observation for next step is current step's new_observation
 ```
 
-This is the inner loop complete and now we add a print statement and increment the episode counter to finalize the outer
+This is the inner loop complete, and now we add a print statement and increment the episode counter to finalize the outer
 loop.
 
 (note that the following code snippet is part of the outer loop)
 ```python
-    print("Episode #", episodeCount, "score:", env.episodeScore)
-    episodeCount += 1  # Increment episode counter
+    print("Episode #", episode_count, "score:", env.episode_score)
+    episode_count += 1  # Increment episode counter
 ```
 
 With the outer loop complete, this completes the training procedure. Now all that's left is the testing loop which is a
@@ -426,24 +450,29 @@ barebones, simpler version of the training loop. First we print a message on whe
 reached the episode limit without satisfying the solved condition) and call the `reset()` method. Then, we create a 
 `while True` loop that runs the agent's forward method, but this time selecting the action with the max probability
 out of the actor's softmax output, eliminating exploration/randomness. Finally, the `step()` method is called, but 
-this time we keep only the observation it returns to keep the environment - agent loop running.
+this time we keep only the observation it returns to keep the environment - agent loop running. If the *done* flag is true, we 
+reset the environment to start over.
 
 ```python
 if not solved:
     print("Task is not solved, deploying agent for testing...")
 elif solved:
     print("Task is solved, deploying agent for testing...")
+
 observation = env.reset()
+env.episode_score = 0.0
 while True:
-    selectedAction, actionProb = agent.work(observation, type_="selectActionMax")
-    observation, _, _, _ = env.step([selectedAction])
+    selected_action, action_prob = agent.work(observation, type_="selectActionMax")
+    observation, _, done, _ = env.step([selected_action])
+    if done:
+        observation = env.reset()
 ```
 
 ### Conclusion
 
 Now with the coding done you can click on the *Run the simulation* button and watch the training run!
  
-![Run the simulation](/robotSupervisorSchemeTutorial/images/clickPlay.png)\
+![Run the simulation](/robotSupervisorSchemeTutorial/images/11_click_play.png)\
 Webots allows to speed up the simulation, even run it without graphics, so the training shouldn't take long, at 
 least to see the agent becoming visibly better at moving under the pole to balance it. It takes a while for it to 
 achieve the *solved* condition, but when it does, it becomes quite good at balancing the pole! You can even apply forces 
