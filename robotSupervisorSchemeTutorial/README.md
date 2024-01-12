@@ -62,11 +62,11 @@ First of all we will download the *CartPole robot node* definition that is suppl
 we will later add it into the world.
  
 1. Right-click on
-[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robotSupervisorController/cartpole_robot_definition.txt) 
+[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/robotSupervisorSchemeTutorial/full_project/controllers/robot_supervisor_controller/cartpole_robot_definition.txt)
 and click *Save link as...* to download the CartPole robot definition 
-2. Save the .txt file in a directory of your choice
-3. Navigate to the directory and open the downloaded file with a text editor
-4. Select everything and copy it
+3. Save the .txt file in a directory of your choice
+4. Navigate to the directory and open the downloaded file with a text editor
+5. Select everything and copy it
 
 Now we need to add the *CartPole robot* into the world:
 
