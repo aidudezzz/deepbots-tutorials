@@ -71,7 +71,7 @@ First of all we will download the *CartPole robot node* definition that is suppl
 we will later add it into the world.
  
 1. Right-click on
-[this link](https://github.com/aidudezzz/deepbots-tutorials/blob/master/emitterReceiverSchemeTutorial/full_project/controllers/supervisorController/cartpole_robot_definition.txt) 
+[this link](https://raw.githubusercontent.com/aidudezzz/deepbots-tutorials/master/emitterReceiverSchemeTutorial/full_project/controllers/supervisor_controller/cartpole_robot_definition.txt)
 and click *Save link as...* to download the CartPole robot definition 
 2. Save the .txt file in a directory of your choice
 3. Navigate to the directory and open the downloaded file with a text editor
