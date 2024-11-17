@@ -1,4 +1,4 @@
-#VRML_SIM R2023a utf8
+#VRML_SIM R2023b utf8
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
@@ -57,8 +57,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation 0.060001004644818584 1.3392769184169005e-05 0.050000010543824816
-        rotation 1.767108253899599e-08 -1.7671248834016873e-08 0.9999999999999998 1.5708000430119504
+        translation 0.060001004644818584 1.339276918417074e-05 0.050000010543824816
+        rotation 1.7671082538995516e-08 -1.76712488340164e-08 0.9999999999999998 1.5708000430119473
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -90,8 +90,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -0.060001095993954395 7.616338723243338e-07 0.05000000952472374
-        rotation 1.760965404319019e-08 -1.7609826183889798e-08 0.9999999999999997 1.5707999569897086
+        translation -0.060001095993954395 7.616338723219541e-07 0.05000000952472374
+        rotation 1.760965404318995e-08 -1.760982618388955e-08 0.9999999999999997 1.5707999569897069
         children [
           USE WHEEL
         ]
@@ -113,8 +113,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation 0.06000100379909951 1.3392659934531789e-05 -0.05000000738328558
-        rotation -1.7671380018270767e-08 1.7671539284228043e-08 0.9999999999999998 1.5708000430119118
+        translation 0.06000100379909951 1.3392659934527935e-05 -0.05000000738328558
+        rotation -1.767138001827027e-08 1.767153928422755e-08 0.9999999999999998 1.570800043011908
         children [
           USE WHEEL
         ]
@@ -136,8 +136,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -0.060001096839924606 7.615246225860199e-07 -0.05000000839401549
-        rotation -1.761000837263908e-08 1.7610180209133882e-08 0.9999999999999997 1.5707999569897055
+        translation -0.060001096839924606 7.615246225881513e-07 -0.05000000839401549
+        rotation -1.761000837263886e-08 1.7610180209133664e-08 0.9999999999999997 1.570799956989704
         children [
           USE WHEEL
         ]
@@ -161,12 +161,11 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -0.00046553268549788974 0.5300037594690286 -5.369584240411798e-07
-        rotation -0.5769874410964103 -0.5775313877690049 0.577531807746226 2.0949379676602047
+        translation -0.00046553268549694605 0.5300037594690283 -5.369584240411796e-07
+        rotation -0.576987441096411 -0.5775313877690046 0.5775318077462258 2.0949379676602042
         children [
           DEF POLE_ENDPOINT Solid {
             translation 0.5000000000000002 0 0
-            scale 0.1 0.1 0.1
             children [
               DEF BALL Shape {
                 appearance PBRAppearance {
@@ -174,7 +173,7 @@ DEF ROBOT Robot {
                   metalness 0
                 }
                 geometry Sphere {
-                  radius 0.1
+                  radius 0.01
                 }
               }
             ]
